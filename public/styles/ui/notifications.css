@@ -1,0 +1,57 @@
+.notification{
+    display: inline-block;
+    /*position: relative;*/
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border: 2px solid #587496;
+    padding:10px 10px 8px;
+    background:#fff;
+    -webkit-border-radius:2px;
+    -moz-border-radius:2px;
+    border-radius:2px;
+    /*margin-left: -100px;*/
+    width: 300px;
+    margin-left: -150px;
+    z-index: 9999;
+}
+.notification-text{
+    font-size:14px;
+    line-height:18px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+/* error */
+.notification-error {
+    line-height: 17px;
+    padding: 10px 12px 8px;
+    margin-bottom: 30px;
+    border: 2px solid #D44F62;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.notification-error-icon {
+    background: url("../../images/icon-error-common.png") no-repeat;
+}
+
+/*.isSVG .notification-error-icon {*/
+    /*background-image: url("../../images/svg/error-common.svg");*/
+    /*-webkit-background-size: 16px;*/
+    /*background-size: 16px;*/
+/*}*/
+
+.notification-error-icon {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    margin-right: 11px;
+}
+.notification-error .notification-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /*white-space: nowrap;*/
+    padding-left: 25px;
+    max-width: 500px;
+}

@@ -1,0 +1,20 @@
+{
+  "name": "RiskSim",
+  "description": "GoldenTree RiskSim",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-contrib-copy": "latest",
+    "grunt-includes": "latest",
+    "grunt-contrib-clean": "latest",
+    "grunt-script-link-tags":"latest",
+    "grunt-contrib-concat":"latest",
+    "grunt-text-replace":"latest",
+    "grunt-contrib-cssmin":"latest",
+    "grunt-contrib-uglify": "latest"
+  }
+}

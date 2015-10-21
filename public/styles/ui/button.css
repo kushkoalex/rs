@@ -1,0 +1,65 @@
+.btn{
+
+}
+
+.button{
+    border: 1px solid #269abc;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background-color: #31b0d5;
+    /*background-color: #66a2ad;*/
+
+
+    font-size: 14px;
+    padding: 6px 12px;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+}
+
+.button:hover{
+    /*background-color: #ddd;*/
+    /*border: 1px solid #ccc;*/
+    opacity: 0.8;
+}
+
+.disabled .button{
+    opacity: 0.4;
+    cursor: default;
+}
+
+.button.disabled:hover{
+
+}
+
+.loading-indicator{
+    height: 100%;
+    width: 30px;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+
+.indicator{
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -8px;
+    margin-left: -8px;
+    background: url("../../images/loading.gif");
+    display: none;
+}
+
+.sbm-button-wrapper{
+    height: 100%;
+
+}
+
+.sbm-button-wrapper.loading .indicator{
+    display: block;
+}

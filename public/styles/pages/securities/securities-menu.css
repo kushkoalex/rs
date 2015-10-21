@@ -1,0 +1,65 @@
+.security-info-wrapper .securities-menu{
+    background-color: #5e686a;
+    border-bottom: 1px solid #ccc;
+    -moz-border-radius:0 10px 0 0;
+    border-radius:0 10px 0 0;
+    -webkit-border-radius:0 10px 0 0;
+}
+
+.security-info-wrapper .securities-menu ul{
+    list-style: none;
+}
+.security-info-wrapper .securities-menu ul li{
+
+    display: inline-block;
+    border-right: none;
+    position: relative;
+    color: #ccc;
+
+}
+.security-info-wrapper .securities-menu ul li:hover
+{
+    background-color: #ccc;
+    color: #666;
+}
+
+.security-info-wrapper .securities-menu ul li.active{
+    background-color: #fff;
+    color: #000;
+}
+
+.security-info-wrapper .securities-menu ul li a{
+    display: block;
+    padding:12px 30px;
+    text-align: center;
+    color: inherit;
+    text-decoration: none;
+}
+.security-info-wrapper .securities-menu ul li a:hover{
+
+}
+.security-info-wrapper .securities-menu ul li .arrow{
+    display: none;
+}
+.security-info-wrapper .securities-menu ul li.active .arrow{
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+
+    border-top: 10px solid #ccc;
+    left: 50%;
+    margin-left: -10px;
+}
+.security-info-wrapper .securities-menu ul li.active .arrow .inner{
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid #fff;
+    position: absolute;
+    margin-top: -10px;
+    margin-left: -9px;
+}

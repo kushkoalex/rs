@@ -1,0 +1,9 @@
+.security-trades-content-container{
+    position: absolute;
+    top: 0;
+    background-color: #ffffff;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+}

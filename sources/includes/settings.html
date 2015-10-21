@@ -1,0 +1,25 @@
+<script type="text/javascript">
+    (function (rs) {
+        var settings;
+        if (rs.settings === null) {
+            rs.settings = settings = {};
+        } else {
+            settings = rs.settings;
+        }
+
+        if (!('controlsDescriptors' in settings)) {
+            settings.controlsDescriptors = {};
+        }
+
+        if (!('dataModels' in settings)) {
+            settings.dataModels = {};
+        }
+    }(RS));
+</script>
+
+include "../includes/settings/controlsDescriptors.html"
+<!--include "../includes/settings/dataModels/securities.html"-->
+include "../includes/settings/dataModels/securityIdType.html"
+include "../includes/settings/dataModels/securityPrices.html"
+include "../includes/settings/dataModels/strategies.html"
+include "../includes/settings/dataModels/process.html"

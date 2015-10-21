@@ -1,0 +1,30 @@
+.multiple-input-wrapper{
+
+}
+
+.multiple-input-wrapper input{
+width: 200px;
+}
+
+.multiple-input-wrapper .items-container{
+
+}
+
+.multiple-input-wrapper .items-container .item{
+    width: 100%;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin:  2px 0;
+    padding: 5px;
+    background-color: #ffffff;
+}
+
+.multiple-input-wrapper .items-container .item .delete{
+    float: right;
+    background: url("../../images/close.png");
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}

@@ -1,0 +1,64 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.clear{
+    clear: both;
+}
+
+.input-group.inline .form-control{
+    display: inline-block;
+}
+
+.form-control{
+    padding-top: 5px;
+    padding-left: 5px;
+}
+.form-control.inline{
+    display: inline-block;
+}
+
+
+.hidden{
+    display: none;
+}
+
+
+
+
+table.data-table{
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+}
+
+table.data-table td {
+    border: 1px solid #eeeeee;
+    border-left: none;
+}
+
+table.data-table tr.odd{
+    background-color: #eeeeee;
+}
+
+table.data-table tr:hover,
+table.data-table tr.odd:hover
+{
+    background-color: #dddddd;
+}
+
+table.data-table tr.head:hover{
+    background-color: #66a2ad;
+}
+
+
+
+
+table.data-table td{
+    padding: 2px;
+}

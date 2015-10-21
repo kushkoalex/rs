@@ -1,0 +1,14 @@
+.pnl-update-content-container{
+
+}
+
+.pnl-update-content-container .form-control{
+    margin-right: 10px;
+}
+
+.pnl-update-content-container .status{
+    color: #666;
+    border: 1px solid #ccc;
+    margin: 5px;
+    padding: 5px;
+}

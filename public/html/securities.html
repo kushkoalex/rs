@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GoldenTree RiskSim</title>
+    <!--<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>-->
+    <!--<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,400italic,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>-->
+    <!--<link href='https://fonts.googleapis.com/css?family=Oranienbaum&subset=cyrillic,latin' rel='stylesheet' type='text/css'>-->
+    <!--<link href='https://fonts.googleapis.com/css?family=Lato:700italic,400italic' rel='stylesheet' type='text/css'>-->
+
+    <!--<script src="https://www.google.com/jsapi?.js"></script>-->
+
+    <!-- start script template tags -->
+        <script type="text/javascript" src="../scripts/gt/GT.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/gt/helpers/DOMClasses.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/gt/helpers/DOMDoings.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/gt/helpers/DOMEvents.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/gt/helpers/DOMSearch.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/gt/helpers/GT.request.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/gt/helpers/each.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/gt/helpers/getJSON.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/gt/helpers/initModules.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/gt/helpers/text.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/libs/cnCt/cnCt.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/RS.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/button.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/datePicker.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/displayInfoWidget.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/input.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/multipleInput.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/select.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/dashboard/dashboard.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/dashboard/tmpls_dashboard.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/notifications/notifications.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/notifications/tmpls_notifications.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/pnlUpdate/pnlUpdate.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/pnlUpdate/tmpls_pnlUpdate.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/securities/securities.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/securities/tmpls_securities.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/securities/tmpls_security.indic.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/securities/tmpls_security.positions.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/securities/tmpls_security.prices.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/securities/tmpls_security.trades.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/slickGrid/slickGrid.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/tradesUpdate/tmpls_tradesUpdate.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/tradesUpdate/trades.exclude.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/tradesUpdate/trades.load.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/tradesUpdate/trades.update.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/tradesUpdate/tradesUpdate.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../vendor/scripts/jquery-1.7.min.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../vendor/scripts/jquery-ui-1.10.3.min.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../vendor/scripts/jquery.event.drag-2.2.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../vendor/scripts/slick.core.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../vendor/scripts/slick.dataview.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../vendor/scripts/slick.grid.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/init.js?v=0.0.1"></script>
+    <!-- end script template tags -->
+
+    <!-- start css template tags -->
+        <link rel="stylesheet" type="text/css" href="../styles/default.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/ui/button.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/ui/common.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/ui/input.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/ui/multiple-input.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/ui/notifications.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/ui/select.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/ui/widget.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/analytics-updater/analytics-updater-menu.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/analytics-updater/analytics-updater.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/analytics-updater/pnl-update.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/analytics-updater/trades-update.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/dashboard/dashboard.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/securities/securities-indic.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/securities/securities-menu.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/securities/securities.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/securities/security-positions.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/securities/security-prices.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/securities/security-trades.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../vendor/styles/jquery-ui-1.10.3.min.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../vendor/styles/slick.grid.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/common.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/layout.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/logo.css?v=0.0.1" media="screen"/>
+    <!-- end css template tags -->
+
+    <script type="text/javascript">
+        (function (rs) {
+            var settings;
+            if (rs.settings === null) {
+                rs.settings = settings = {};
+            } else {
+                settings = rs.settings;
+            }
+
+            if (!('controlsDescriptors' in settings)) {
+                settings.controlsDescriptors = {};
+            }
+
+            if (!('dataModels' in settings)) {
+                settings.dataModels = {};
+            }
+        }(RS));
+    </script>
+
+    <script type="text/javascript">
+        (function (rs) {
+            var settings = rs.settings,
+            controlsDescriptors = settings.controlsDescriptors;
+
+            controlsDescriptors.securities = {
+                searchUrl:'',
+                getDetailsUrl:'',
+                loadPositionsUrl:'',
+                loadTradesUrl:'',
+                loadPricesUrl:'',
+                updatePricesUrl:'',
+                updateTrades_loadIntoRiskSimUrl:'',
+                updateTrades_TradesUpdateUrl:'',
+                updateTrades_TradesExcludeUrl:'',
+                reportGenRunUrl:'',
+                getReportGenStatusUrl:'/getstatus',
+                prevBusinessDay:'09/01/2015',
+                errorMessageTimeout:3000
+            };
+
+            //controlsDescriptors.multipleInputSplitRegex = '/\s?[, ]\s?/';
+
+        }(RS));
+    </script>
+
+
+    <!--include "../includes/settings/dataModels/securities.html"-->
+    <script type="text/javascript">
+        (function (rs) {
+            rs.settings.dataModels.securityIdType = [
+                {text:'All0',value:'All0'},
+                {text:'All1',value:'All1'},
+                {text:'All2',value:'All2'},
+                {text:'All3',value:'All3'},
+                {text:'All4',value:'All4'},
+                {text:'All5',value:'All5'}
+            ]
+        }(RS));
+    </script>
+
+
+    <script type="text/javascript">
+        (function (rs) {
+
+            rs.settings.dataModels.securityPrices = [
+                {
+                    PortfolioId: '12345',
+                    Code: 'FTMF',
+                    SecId: '123',
+                    SyId: '324',
+                    VpmSyCode: '234',
+                    VpmStCode: '545',
+                    RsPrice: '25',
+                    VpmPriceDate: '345',
+                    VpmPrice: '245',
+                    AltPrice1: '324',
+                    AltPrice2: '234',
+                    AltPrice3: '2354',
+                    PriceType: '2354',
+                    EffectivePrice: '234'
+                },
+                {
+                    PortfolioId: '12345',
+                    Code: 'FTMF',
+                    SecId: '123',
+                    SyId: '324',
+                    VpmSyCode: '234',
+                    VpmStCode: '545',
+                    RsPrice: '25',
+                    VpmPriceDate: '345',
+                    VpmPrice: '245',
+                    AltPrice1: '324',
+                    AltPrice2: '234',
+                    AltPrice3: '2354',
+                    PriceType: '2354',
+                    EffectivePrice: '234'
+                },
+                {
+                    PortfolioId: '12345',
+                    Code: 'FTMF',
+                    SecId: '123',
+                    SyId: '324',
+                    VpmSyCode: '234',
+                    VpmStCode: '545',
+                    RsPrice: '25',
+                    VpmPriceDate: '345',
+                    VpmPrice: '245',
+                    AltPrice1: '324',
+                    AltPrice2: '234',
+                    AltPrice3: '2354',
+                    PriceType: '2354',
+                    EffectivePrice: '234'
+                },
+                {
+                    PortfolioId: '12345',
+                    Code: 'FTMF',
+                    SecId: '123',
+                    SyId: '324',
+                    VpmSyCode: '234',
+                    VpmStCode: '545',
+                    RsPrice: '25',
+                    VpmPriceDate: '345',
+                    VpmPrice: '245',
+                    AltPrice1: '324',
+                    AltPrice2: '234',
+                    AltPrice3: '2354',
+                    PriceType: '2354',
+                    EffectivePrice: '234'
+                },
+                {
+                    PortfolioId: '12345',
+                    Code: 'FTMF',
+                    SecId: '123',
+                    SyId: '324',
+                    VpmSyCode: '234',
+                    VpmStCode: '545',
+                    RsPrice: '25',
+                    VpmPriceDate: '345',
+                    VpmPrice: '245',
+                    AltPrice1: '324',
+                    AltPrice2: '234',
+                    AltPrice3: '2354',
+                    PriceType: '2354',
+                    EffectivePrice: '234'
+                }
+            ];
+        }(RS));
+    </script>
+
+
+    <script type="text/javascript">
+        (function (rs) {
+            rs.settings.dataModels.strategies = [
+                {text:'All0',value:'All0'},
+                {text:'All1',value:'All1'},
+                {text:'All2',value:'All2'},
+                {text:'All3',value:'All3'},
+                {text:'All4',value:'All4'},
+                {text:'All5',value:'All5'}
+            ]
+        }(RS));
+    </script>
+
+
+    <script type="text/javascript">
+        (function (rs) {
+            rs.settings.dataModels.process = [
+                {text:'',value:''},
+                {text:'proc1',value:'proc1'},
+                {text:'proc2',value:'proc2'},
+                {text:'proc3',value:'proc3'}
+            ]
+        }(RS));
+    </script>
+
+
+
+</head>
+<body>
+<div class="page-layout">
+    <div class="layout-left">
+        <div class="header noselect">
+            <div class="logo">
+                <div class="top-arrow"></div>
+                <div class="bottom-arrow"></div>
+            </div>
+            <div class="app-name">GoldenTree<br> RiskSim</div>
+        </div>
+        <ul class="main-menu noselect">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li class="active">Securities</li>
+            <li><a href="trades-update.html">Analytics Updater</a></li>
+        </ul>
+    </div>
+    <div class="content-layout">
+        <!--<div class="content-layout-header">-->
+
+        <!--</div>-->
+
+        <div class="content-layout-content-wrapper securities" id="securities">
+
+        </div >
+        <div class="content-layout-footer">
+            <div id="info"></div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

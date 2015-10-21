@@ -1,0 +1,79 @@
+.page-layout.analytics-updater .layout-left .header
+{
+    border-right: 1px solid #384042;
+}
+
+.content-layout-header.analytics-updater{
+    background-color: #3b5566;
+    background-color: #5e686a;
+    /*padding-top: 25px;*/
+    position: relative;
+    height: 66px;
+}
+
+.content-layout-header.analytics-updater .trades-update-menu{
+    background-color: #5e686a;
+    border-bottom: 1px solid #ccc;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+
+}
+
+.trades-update-menu ul{
+    list-style: none;
+}
+.trades-update-menu ul li{
+
+    display: inline-block;
+    border-right: none;
+    position: relative;
+    color: #ccc;
+
+}
+.trades-update-menu ul li:hover
+{
+    background-color: #ccc;
+    color: #666;
+}
+
+.trades-update-menu ul li.active{
+    background-color: #fff;
+    color: #000;
+}
+
+.trades-update-menu ul li a{
+    display: block;
+    padding:12px 30px;
+    text-align: center;
+    color: inherit;
+    text-decoration: none;
+}
+.trades-update-menu ul li a:hover{
+
+}
+.trades-update-menu ul li .arrow{
+    display: none;
+}
+.trades-update-menu ul li.active .arrow{
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+
+    border-top: 10px solid #ccc;
+    left: 50%;
+    margin-left: -10px;
+}
+.trades-update-menu ul li.active .arrow .inner{
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid #fff;
+    position: absolute;
+    margin-top: -10px;
+    margin-left: -9px;
+}
