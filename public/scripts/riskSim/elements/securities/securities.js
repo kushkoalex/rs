@@ -441,6 +441,7 @@ RS.securities = function ($parent) {
 
             gt.addClass($btnUpdateSubmit, 'disabled');
 
+            sbmBtnSearchClick.call($btnSearchSubmit);
 
         }
         else {
