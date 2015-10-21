@@ -7,7 +7,7 @@ RS.securities = function ($parent) {
         doc = global.document,
         data = settings.dataModels.securities,
         eventOnPointerEnd = gt.deviceInfo.eventOnPointerEnd,
-    //securities = settings.dataModels.securities,
+        //securities = settings.dataModels.securities,
         notifications = rs.notifications,
         securitiesErrorMessageTimeout = rs.settings.controlsDescriptors.securities.errorMessageTimeout || 3000,
         build = tp('securities', $parent),
@@ -18,6 +18,7 @@ RS.securities = function ($parent) {
         updatingPricesErrorText = 'Error updating security prices',
         loadingIndicErrorText = 'Error loading security indic',
         loadingSecuritiesErrorText = 'Error loading securities',
+        securityInfoWrapperEmptyText ='Please select the security from the list',
         $secId,
         $secIdType,
         $securityInfoWrapper,
@@ -91,7 +92,6 @@ RS.securities = function ($parent) {
         currentTab = 4;
     };
 
-
     var showErrorMessage = function (error) {
         var errorOptions = {
             text: error.text || error.description || 'error',
@@ -111,6 +111,7 @@ RS.securities = function ($parent) {
     };
 
     var loadDetails = function () {
+
         $securityInfoContainer.innerHTML = '';
         var $fragment = global.document.createDocumentFragment();
 
@@ -124,13 +125,14 @@ RS.securities = function ($parent) {
                     tp('securityIndic', data, $fragment);
                     $securityInfoContainer.appendChild($fragment)
                 },
-                onError: function (error) {
-                    console.log(error)
+                onError: function () {
+                    showErrorMessage({text:loadingIndicErrorText});
                 }
             });
         }
         else {
-            $securityInfoContainer.innerHTML = '<div class="page-info">Please select the security from the list</div>';
+            tp('securityInfoWrapperEmpty',{text:securityInfoWrapperEmptyText},$fragment);
+            $securityInfoContainer.appendChild($fragment);
         }
     };
 
@@ -202,12 +204,12 @@ RS.securities = function ($parent) {
             sbmBtnClick.call($btnSubmit);
         }
         else {
-            $securityInfoContainer.innerHTML = '<div class="page-info">Please select the security from the list</div>';
+            tp('securityInfoWrapperEmpty',{text:securityInfoWrapperEmptyText},$fragment);
+            $securityInfoContainer.appendChild($fragment);
         }
 
 
     };
-
 
     var loadTrades = function () {
         var $fragment = global.document.createDocumentFragment(),
@@ -243,7 +245,8 @@ RS.securities = function ($parent) {
                 });
 
         } else {
-            $securityInfoContainer.innerHTML = '<div class="page-info">Please select the security from the list</div>';
+            tp('securityInfoWrapperEmpty',{text:securityInfoWrapperEmptyText},$fragment);
+            $securityInfoContainer.appendChild($fragment);
         }
     };
 
@@ -436,7 +439,6 @@ RS.securities = function ($parent) {
                 gt.addEvent($btnUpdateSubmit, eventOnPointerEnd, sbmBtnUpdateClick);
             };
 
-
             gt.addEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
 
             gt.addClass($btnUpdateSubmit, 'disabled');
@@ -445,11 +447,11 @@ RS.securities = function ($parent) {
 
         }
         else {
-            $securityInfoContainer.innerHTML = '<div class="page-info">Please select the security from the list</div>';
+            tp('securityInfoWrapperEmpty',{text:securityInfoWrapperEmptyText},$fragment);
+            $securityInfoContainer.appendChild($fragment);
         }
 
     };
-
 
     var getValues = function () {
         return {
@@ -542,7 +544,6 @@ RS.securities = function ($parent) {
             });
     };
 
-
     gt.addEvent($secId, 'keyup', onChangeRequestQuery);
     gt.addEvent($secIdType, 'change', onChangeRequestQuery);
 
@@ -550,6 +551,4 @@ RS.securities = function ($parent) {
     gt.addEvent($positionsTab, eventOnPointerEnd, positionsTabClick);
     gt.addEvent($tradesTab, eventOnPointerEnd, tradesTabClick);
     gt.addEvent($pricesTab, eventOnPointerEnd, pricesTabClick);
-
-
 };

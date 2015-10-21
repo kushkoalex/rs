@@ -12,6 +12,10 @@
         ]
     };
 
+    tmpls.securityInfoWrapperEmpty =function(data){
+        return{c:'page-info',t:data.text}
+    };
+
     tmpls.securityInfoWrapper = function () {
         // TODO: uncomment
         //return {c:'security-info-wrapper hidden',n:'securityInfoContainer'}
