@@ -4,15 +4,10 @@ RS.pnlUpdate = function ($parent) {
         gt = global.GT,
         tp = global.cnCt.tp,
         settings = rs.settings,
-        doc = global.document,
-        loadIntoRiskSim,
-        updateTrades,
-        excludeTrades,
         build = tp('pnlUpdate', $parent),
         notifications = rs.notifications,
         securitiesErrorMessageTimeout = rs.settings.controlsDescriptors.securities.errorMessageTimeout || 3000,
         $popupMessagesWrapper = build.messagesWrapper,
-        eventOnPointerEnd = gt.deviceInfo.eventOnPointerEnd,
         $btnSubmit = build.btnSubmit,
         $runDate = build.runDate,
         $portfolios = build.portfolios,
@@ -30,57 +25,20 @@ RS.pnlUpdate = function ($parent) {
         notifications.showError(errorOptions);
     };
 
-    var showAnnouncementMessage = function (announcement) {
-        var announcementOptions = {
-            text: announcement.text,
-            $wrapper: $popupMessagesWrapper,
-            hideTimeout: securitiesErrorMessageTimeout
-        };
-        notifications.showAnnouncement(announcementOptions);
-    };
-
-    var disableSbmBtn = function (ctx) {
-        gt.addClass(ctx.parentNode, 'disabled');
-        gt.addClass(ctx.parentNode, 'loading');
-        gt.removeEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-    };
-
-    var enableSbmBtn = function () {
-        gt.removeClass($btnSubmit.parentNode, 'disabled');
-        gt.removeClass($btnSubmit.parentNode, 'loading');
-        gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-    };
-
-
     var rgRunOnSuccess = function (response) {
-        //showAnnouncementMessage({text:response.message});
         refreshIntervalId = setInterval(getStatus, 2000);
     };
 
     var rgRunOnError = function () {
         showErrorMessage({text: 'error'});
-        enableSbmBtn();
+        btnSubmit.enable();
     };
 
     var sbmBtnClick = function () {
         if (!validateFields()) {
             return;
         }
-        disableSbmBtn(this);
-
-        //gt.request(
-        //    {
-        //        method: 'POST',
-        //        postData: {
-        //            portfolios: portfolios.getValues(),
-        //            securityIds: securityIds.getValues(),
-        //            runDate: $runDate.value
-        //        },
-        //        url: settings.controlsDescriptors.securities.reportGenRunUrl,
-        //        onSuccess: rgRunOnSuccess,
-        //        onError: rgRunOnError
-        //    });
-
+        btnSubmit.disable();
         var data = {
             portfolios: portfolios.getValues(),
             securityIds: securityIds.getValues(),
@@ -120,11 +78,9 @@ RS.pnlUpdate = function ($parent) {
         return isValid;
     };
 
-    var portfolios = gt.multipleInput($portfolios);
-    var securityIds = gt.multipleInput($securityIds);
-    gt.datePicker($runDate);
-    gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
 
+
+    //gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
 
     var getStatus = function () {
 
@@ -144,26 +100,36 @@ RS.pnlUpdate = function ($parent) {
                 if (status.completed === 1) {
                     if (refreshIntervalId) {
                         clearInterval(refreshIntervalId);
-                        enableSbmBtn();
+                        btnSubmit.enable();
+                        //enableSbmBtn();
                     }
                 }
                 else {
-                    disableSbmBtn($btnSubmit);
+                    //disableSbmBtn($btnSubmit);
+                    btnSubmit.disable();
                 }
 
             } else {
                 statusDetails.innerHTML = status.errorMessage;
                 clearInterval(refreshIntervalId);
-                enableSbmBtn();
+                //enableSbmBtn();
+                btnSubmit.enable();
             }
         }).fail(function (error) {
             clearInterval(refreshIntervalId);
-            enableSbmBtn();
+            //enableSbmBtn();
+            btnSubmit.enable();
             console.log(error);
         }).always(function (data) {
                 //alert("finished");
             });
     };
+
+    gt.datePicker($runDate);
+    var portfolios = gt.multipleInput($portfolios);
+    var securityIds = gt.multipleInput($securityIds);
+    var btnSubmit = gt.customButton($btnSubmit,{submitCallBack: sbmBtnClick});
+
     getStatus();
     refreshIntervalId = setInterval(getStatus, 3000);
 };

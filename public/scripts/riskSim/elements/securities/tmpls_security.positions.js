@@ -21,7 +21,8 @@
                         },
                         {
                             c: 'form-control loading-positions-sbm-button',
-                            C: tmpls.button({text: 'Search', name: 'btnSearch', n: 'btnSubmit'})
+                            //C: tmpls.button({text: 'Search', name: 'btnSearch', n: 'btnSubmit'})
+                            C: tmpls.loadingButton({text: 'Search', name: 'btnSearch', n: 'btnSubmit'})
                         }
                     ]
                 }

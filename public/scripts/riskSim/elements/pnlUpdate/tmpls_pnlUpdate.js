@@ -32,7 +32,7 @@
                     },
                     {
                         c: 'form-control',
-                        C: tmpls.button({text: 'Run', n: 'btnSubmit'})
+                        C: tmpls.loadingButton({text: 'Run', n: 'btnSubmit'})
                     }
                 ]
                 }

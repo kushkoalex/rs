@@ -7,7 +7,7 @@ RS.securities = function ($parent) {
         doc = global.document,
         data = settings.dataModels.securities,
         eventOnPointerEnd = gt.deviceInfo.eventOnPointerEnd,
-        //securities = settings.dataModels.securities,
+    //securities = settings.dataModels.securities,
         notifications = rs.notifications,
         securitiesErrorMessageTimeout = rs.settings.controlsDescriptors.securities.errorMessageTimeout || 3000,
         build = tp('securities', $parent),
@@ -18,7 +18,7 @@ RS.securities = function ($parent) {
         updatingPricesErrorText = 'Error updating security prices',
         loadingIndicErrorText = 'Error loading security indic',
         loadingSecuritiesErrorText = 'Error loading securities',
-        securityInfoWrapperEmptyText ='Please select the security from the list',
+        securityInfoWrapperEmptyText = 'Please select the security from the list',
         $secId,
         $secIdType,
         $securityInfoWrapper,
@@ -34,10 +34,11 @@ RS.securities = function ($parent) {
         $securityResultTable,
         securityListItem,
         selectedSecurityId = null,
-        $indicTab,
-        $positionsTab,
-        $tradesTab,
-        $pricesTab,
+        tabs,
+    //$indicTab,
+    //$positionsTab,
+    //$tradesTab,
+    //$pricesTab,
         currentTab,
         u;
 
@@ -49,10 +50,28 @@ RS.securities = function ($parent) {
     $securityInfoContainer = build.securityInfoContainer;
 
 
-    $indicTab = build.indicTab;
-    $positionsTab = build.positionsTab;
-    $tradesTab = build.tradesTab;
-    $pricesTab = build.pricesTab;
+    var initTabs = function () {
+        tabs = {
+            $indicTab: {n: build.indicTab, fn: indicTabClick},
+            $positionsTab: {n: build.positionsTab, fn: positionsTabClick},
+            $tradesTab: {n: build.tradesTab, fn: tradesTabClick},
+            $pricesTab: {n: build.pricesTab, fn: pricesTabClick}
+        };
+
+        for (var tab in tabs) {
+            gt.addEvent(tabs[tab].n, eventOnPointerEnd, tabs[tab].fn);
+        }
+    };
+
+    //$indicTab = build.indicTab;
+    //$positionsTab = build.positionsTab;
+    //$tradesTab = build.tradesTab;
+    //$pricesTab = build.pricesTab;
+
+    //gt.addEvent($indicTab, eventOnPointerEnd, indicTabClick);
+    //gt.addEvent($positionsTab, eventOnPointerEnd, positionsTabClick);
+    //gt.addEvent($tradesTab, eventOnPointerEnd, tradesTabClick);
+    //gt.addEvent($pricesTab, eventOnPointerEnd, pricesTabClick);
 
 
     var setSubMenuItemsInactive = function () {
@@ -126,12 +145,12 @@ RS.securities = function ($parent) {
                     $securityInfoContainer.appendChild($fragment)
                 },
                 onError: function () {
-                    showErrorMessage({text:loadingIndicErrorText});
+                    showErrorMessage({text: loadingIndicErrorText});
                 }
             });
         }
         else {
-            tp('securityInfoWrapperEmpty',{text:securityInfoWrapperEmptyText},$fragment);
+            tp('securityInfoWrapperEmpty', {text: securityInfoWrapperEmptyText}, $fragment);
             $securityInfoContainer.appendChild($fragment);
         }
     };
@@ -156,7 +175,8 @@ RS.securities = function ($parent) {
 
 
             var sbmBtnClick = function () {
-                disableSbmBtn(this);
+                //disableSbmBtn(this);
+                btnSubmit.loading();
                 gt.request(
                     {
                         method: 'POST',
@@ -168,21 +188,22 @@ RS.securities = function ($parent) {
             };
 
 
-            gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
+            //gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
+            var btnSubmit = gt.customButton($btnSubmit, {submitCallBack: sbmBtnClick});
 
             gt.datePicker($asOfDate);
 
-            var disableSbmBtn = function (ctx) {
-                gt.addClass(ctx.parentNode, 'disabled');
-                gt.addClass(ctx.parentNode, 'loading');
-                gt.removeEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-            };
-
-            var enableSbmBtn = function () {
-                gt.removeClass($btnSubmit.parentNode, 'disabled');
-                gt.removeClass($btnSubmit.parentNode, 'loading');
-                gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-            };
+            //var disableSbmBtn = function (ctx) {
+            //    gt.addClass(ctx.parentNode, 'disabled');
+            //    gt.addClass(ctx.parentNode, 'loading');
+            //    gt.removeEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
+            //};
+            //
+            //var enableSbmBtn = function () {
+            //    gt.removeClass($btnSubmit.parentNode, 'disabled');
+            //    gt.removeClass($btnSubmit.parentNode, 'loading');
+            //    gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
+            //};
 
             var loadPositionsSuccess = function (response) {
                 if (response.errorCode === 0) {
@@ -193,18 +214,20 @@ RS.securities = function ($parent) {
                 } else {
                     showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }
-                enableSbmBtn();
+                //enableSbmBtn();
+                btnSubmit.enable();
             };
 
             var loadPositionsError = function (error) {
                 showErrorMessage({text: error || loadingPositionsErrorText});
-                enableSbmBtn();
+                //enableSbmBtn();
+                btnSubmit.enable();
             };
 
-            sbmBtnClick.call($btnSubmit);
+            sbmBtnClick.call();
         }
         else {
-            tp('securityInfoWrapperEmpty',{text:securityInfoWrapperEmptyText},$fragment);
+            tp('securityInfoWrapperEmpty', {text: securityInfoWrapperEmptyText}, $fragment);
             $securityInfoContainer.appendChild($fragment);
         }
 
@@ -245,7 +268,7 @@ RS.securities = function ($parent) {
                 });
 
         } else {
-            tp('securityInfoWrapperEmpty',{text:securityInfoWrapperEmptyText},$fragment);
+            tp('securityInfoWrapperEmpty', {text: securityInfoWrapperEmptyText}, $fragment);
             $securityInfoContainer.appendChild($fragment);
         }
     };
@@ -273,7 +296,8 @@ RS.securities = function ($parent) {
 
 
             var sbmBtnSearchClick = function () {
-                disableSearchSbmBtn(this);
+                //disableSearchSbmBtn(this);
+                btnSearchSubmit.loading();
                 gt.request(
                     {
                         method: 'POST',
@@ -303,7 +327,10 @@ RS.securities = function ($parent) {
             var sbmBtnUpdateClick = function () {
                 var selectedPrices = collectSelectedPrices();
                 if (selectedPrices.length > 0) {
-                    disableUpdateSbmBtn(this);
+                    //disableUpdateSbmBtn(this);
+
+                    btnUpdateSubmit.loading();
+
                     gt.request(
                         {
                             method: 'POST',
@@ -329,12 +356,14 @@ RS.securities = function ($parent) {
                 } else {
                     showErrorMessage({text: response.errorText});
                 }
-                enableUpdateSbmBtn();
+                //enableUpdateSbmBtn();
+                btnUpdateSubmit.enable();
             };
 
             var updatePricesError = function (error) {
                 showErrorMessage({text: error || updatingPricesErrorText});
-                enableUpdateSbmBtn();
+                //enableUpdateSbmBtn();
+                btnUpdateSubmit.enable();
             };
 
 
@@ -395,59 +424,66 @@ RS.securities = function ($parent) {
                         });
 
                         $securityPricesContentContainer.appendChild($fragment);
-                        gt.removeClass($btnUpdateSubmit, 'disabled');
-                        gt.addEvent($btnUpdateSubmit, eventOnPointerEnd, sbmBtnUpdateClick);
+                        btnUpdateSubmit.enable();
+                        //gt.removeClass($btnUpdateSubmit, 'disabled');
+                        //gt.addEvent($btnUpdateSubmit, eventOnPointerEnd, sbmBtnUpdateClick);
                     }
                 } else {
                     showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }
-                enableSearchSbmBtn();
-
+                //enableSearchSbmBtn();
+                btnSearchSubmit.enable();
             };
 
             var loadPricesError = function (error) {
 
                 setTimeout(function () {
                     showErrorMessage({text: error || loadingPricesErrorText});
-                    enableSearchSbmBtn();
+                    //enableSearchSbmBtn();
+                    btnSearchSubmit.enable();
                 }, 2000);
 
 
             };
 
-            var disableSearchSbmBtn = function (ctx) {
-                gt.addClass(ctx.parentNode, 'disabled');
-                gt.addClass(ctx.parentNode, 'loading');
-                gt.removeEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
-            };
+            //var disableSearchSbmBtn = function (ctx) {
+            //    gt.addClass(ctx.parentNode, 'disabled');
+            //    gt.addClass(ctx.parentNode, 'loading');
+            //    gt.removeEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
+            //};
+            //
+            //var enableSearchSbmBtn = function () {
+            //    gt.removeClass($btnSearchSubmit.parentNode, 'disabled');
+            //    gt.removeClass($btnSearchSubmit.parentNode, 'loading');
+            //    gt.addEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
+            //};
+            //
+            //var disableUpdateSbmBtn = function (ctx) {
+            //    gt.addClass(ctx.parentNode, 'disabled');
+            //    gt.addClass(ctx.parentNode, 'loading');
+            //    gt.removeEvent($btnUpdateSubmit, eventOnPointerEnd, sbmBtnUpdateClick);
+            //};
+            //
+            //var enableUpdateSbmBtn = function () {
+            //    gt.removeClass($btnUpdateSubmit.parentNode, 'disabled');
+            //    gt.removeClass($btnUpdateSubmit.parentNode, 'loading');
+            //    gt.addEvent($btnUpdateSubmit, eventOnPointerEnd, sbmBtnUpdateClick);
+            //};
 
-            var enableSearchSbmBtn = function () {
-                gt.removeClass($btnSearchSubmit.parentNode, 'disabled');
-                gt.removeClass($btnSearchSubmit.parentNode, 'loading');
-                gt.addEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
-            };
+            //gt.addEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
+            var btnSearchSubmit = gt.customButton($btnSearchSubmit, {submitCallBack: sbmBtnSearchClick});
+            var btnUpdateSubmit = gt.customButton($btnUpdateSubmit, {
+                submitCallBack: sbmBtnUpdateClick,
+                isDisabled: true
+            });
 
-            var disableUpdateSbmBtn = function (ctx) {
-                gt.addClass(ctx.parentNode, 'disabled');
-                gt.addClass(ctx.parentNode, 'loading');
-                gt.removeEvent($btnUpdateSubmit, eventOnPointerEnd, sbmBtnUpdateClick);
-            };
+            //gt.addClass($btnUpdateSubmit, 'disabled');
 
-            var enableUpdateSbmBtn = function () {
-                gt.removeClass($btnUpdateSubmit.parentNode, 'disabled');
-                gt.removeClass($btnUpdateSubmit.parentNode, 'loading');
-                gt.addEvent($btnUpdateSubmit, eventOnPointerEnd, sbmBtnUpdateClick);
-            };
-
-            gt.addEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
-
-            gt.addClass($btnUpdateSubmit, 'disabled');
-
-            sbmBtnSearchClick.call($btnSearchSubmit);
+            sbmBtnSearchClick.call();
 
         }
         else {
-            tp('securityInfoWrapperEmpty',{text:securityInfoWrapperEmptyText},$fragment);
+            tp('securityInfoWrapperEmpty', {text: securityInfoWrapperEmptyText}, $fragment);
             $securityInfoContainer.appendChild($fragment);
         }
 
@@ -480,9 +516,9 @@ RS.securities = function ($parent) {
 
 
         if (!currentTab) {
-                setCurrentMenuItemActive($indicTab);
-                loadDetails();
-                currentTab = 1;
+            setCurrentMenuItemActive(tabs.$indicTab);
+            loadDetails();
+            currentTab = 1;
 
         }
         else {
@@ -547,8 +583,5 @@ RS.securities = function ($parent) {
     gt.addEvent($secId, 'keyup', onChangeRequestQuery);
     gt.addEvent($secIdType, 'change', onChangeRequestQuery);
 
-    gt.addEvent($indicTab, eventOnPointerEnd, indicTabClick);
-    gt.addEvent($positionsTab, eventOnPointerEnd, positionsTabClick);
-    gt.addEvent($tradesTab, eventOnPointerEnd, tradesTabClick);
-    gt.addEvent($pricesTab, eventOnPointerEnd, pricesTabClick);
+    initTabs();
 };

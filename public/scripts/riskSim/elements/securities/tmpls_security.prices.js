@@ -31,11 +31,11 @@
                         },
                         {
                             c: 'form-control loading-prices-sbm-button',
-                            C: tmpls.button({text: 'Search', name: 'btnSearch', n: 'btnSearchSubmit'})
+                            C: tmpls.loadingButton({text: 'Search', name: 'btnSearch', n: 'btnSearchSubmit'})
                         },
                         {
                             c: 'form-control loading-prices-sbm-button',
-                            C: tmpls.button({text: 'Update', name: 'btnUpdate', n: 'btnUpdateSubmit'})
+                            C: tmpls.loadingButton({text: 'Update', name: 'btnUpdate', n: 'btnUpdateSubmit'})
                         }
                     ]
                 }

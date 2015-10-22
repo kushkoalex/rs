@@ -1,0 +1,41 @@
+*{
+    /*box-sizing: border-box;*/
+    /*box-sizing: content-box;*/
+}
+
+.custom-button{
+    display: inline-block;
+
+}
+.custom-button .btn {
+    border: 1px solid #269abc;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background-color: #31b0d5;
+    font-size: 14px;
+    padding: 7px 12px;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    line-height: 1;
+}
+
+.custom-button .indic {
+    display: inline-block;
+    background: none;
+    width: 25px;
+    height: 30px;
+}
+
+.custom-button.loading .indic{
+    background: url("../../images/loading.gif") no-repeat center;
+}
+
+.custom-button.disabled .btn{
+    opacity: 0.4;
+    cursor: default;
+}
+

@@ -19,11 +19,11 @@
                 },
                 {
                     c: 'form-control',
-                    C: tmpls.button({text: 'Clear', n: 'btnClear'})
+                    C: tmpls.customButton({text: 'Clear', n: 'btnClear'})
                 },
                 {
                     c: 'form-control',
-                    C: tmpls.button({text: 'Load', n: 'btnSubmit'})
+                    C: tmpls.loadingButton({text: 'Load', n: 'btnSubmit'})
                 }
             ]
         };
@@ -55,11 +55,11 @@
                 },
                 {
                     c: 'form-control',
-                    C: tmpls.button({text: 'Clear', n: 'btnClear'})
+                    C: tmpls.customButton({text: 'Clear', n: 'btnClear'})
                 },
                 {
                     c: 'form-control',
-                    C: tmpls.button({text: 'Load', n: 'btnSubmit'})
+                    C: tmpls.loadingButton({text: 'Load', n: 'btnSubmit'})
                 }
             ]
         };
@@ -80,11 +80,11 @@
                 },
                 {
                     c: 'form-control',
-                    C: tmpls.button({text: 'Clear', n: 'btnClear'})
+                    C: tmpls.customButton({text: 'Clear', n: 'btnClear'})
                 },
                 {
                     c: 'form-control',
-                    C: tmpls.button({text: 'Load', n: 'btnSubmit'})
+                    C: tmpls.loadingButton({text: 'Load', n: 'btnSubmit'})
                 }
             ]
         };

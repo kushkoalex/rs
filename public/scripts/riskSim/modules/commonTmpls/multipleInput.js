@@ -22,13 +22,6 @@
         inputWrapper.C.push(el);
         inputWrapper.C.push({c: 'items-container'});
         return inputWrapper;
-
-        //return {
-        //    c: 'multiple-input-wrapper input-wrapper', n: options.n, C: [
-        //        {e: 'input',a:{type:'text'}},
-        //        {c: 'items-container'}
-        //    ]
-        //}
     };
 
     tmpls.multipleInputItem = function (value) {
@@ -42,7 +35,6 @@
     var
         eventOnPointerEnd = gt.deviceInfo.eventOnPointerEnd,
         global = rs.global;
-
 
     gt.multipleInput = function ($parent, options) {
         var $input = gt.$tn('input', $parent)[0];

@@ -33,51 +33,26 @@ RS.updateTrades = function ($parent) {
         notifications.showAnnouncement(announcementOptions);
     };
 
-
-    var disableSbmBtn = function (ctx) {
-        gt.addClass(ctx.parentNode, 'disabled');
-        gt.addClass(ctx.parentNode, 'loading');
-        gt.removeEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-    };
-
-    var enableSbmBtn = function () {
-        gt.removeClass($btnSubmit.parentNode, 'disabled');
-        gt.removeClass($btnSubmit.parentNode, 'loading');
-        gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-    };
-
     var loadOnSuccess = function (response) {
         if (response.errorCode == 0) {
             showAnnouncementMessage({text: 'Completed'});
         } else {
             showErrorMessage({text: 'Error excluding trades ' + response.errorText});
         }
-        enableSbmBtn();
+        btnSubmit.enable();
     };
 
     var loadOnError = function () {
-
         showErrorMessage({text: 'Error updating trades'});
-        enableSbmBtn();
+        btnSubmit.enable();
     };
 
     var sbmBtnClick = function () {
         if (!validateFields()) {
             return;
         }
-        disableSbmBtn(this);
-        //gt.request(
-        //    {
-        //        method: 'POST',
-        //        postData: {
-        //            evIds: evIds.getValues(),
-        //            strategyId: $strategy.value,
-        //            nominalSettlementDate: $nominalSettleDate.value
-        //        },
-        //        url: settings.controlsDescriptors.securities.updateTrades_loadIntoRiskSimUrl,
-        //        onSuccess: loadOnSuccess,
-        //        onError: loadOnError
-        //    });
+
+        btnSubmit.loading();
 
         var data = {
             evIds: evIds.getValues(),
@@ -118,6 +93,9 @@ RS.updateTrades = function ($parent) {
 
     var evIds = gt.multipleInput($evIds);
     gt.datePicker($nominalSettleDate);
-    gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-    gt.addEvent($btnClear, eventOnPointerEnd, clearBtnClick);
+
+    var btnSubmit = gt.customButton($btnSubmit,{submitCallBack: sbmBtnClick});
+    gt.customButton($btnClear,{submitCallBack:clearBtnClick});
+    //gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
+    //gt.addEvent($btnClear, eventOnPointerEnd, clearBtnClick);
 };

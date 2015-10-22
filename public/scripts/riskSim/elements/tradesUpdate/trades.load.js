@@ -6,7 +6,6 @@ RS.loadIntoRiskSim = function ($parent) {
         notifications = rs.notifications,
         securitiesErrorMessageTimeout = rs.settings.controlsDescriptors.securities.errorMessageTimeout || 3000,
         $popupMessagesWrapper=$parent.messagesWrapper,
-        eventOnPointerEnd = gt.deviceInfo.eventOnPointerEnd,
         $evIds = $parent.evIds,
         $btnSubmit = $parent.btnSubmit,
         $btnClear = $parent.btnClear,
@@ -31,48 +30,26 @@ RS.loadIntoRiskSim = function ($parent) {
         notifications.showAnnouncement(announcementOptions);
     };
 
-
-
-    var disableSbmBtn = function (ctx) {
-        gt.addClass(ctx.parentNode, 'disabled');
-        gt.addClass(ctx.parentNode, 'loading');
-        gt.removeEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-    };
-
-    var enableSbmBtn = function () {
-        gt.removeClass($btnSubmit.parentNode, 'disabled');
-        gt.removeClass($btnSubmit.parentNode, 'loading');
-        gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-    };
-
     var loadOnSuccess = function (response) {
         if (response.errorCode == 0) {
             showAnnouncementMessage({ text: 'Completed' });
         } else {
             showErrorMessage({ text: 'Error excluding trades ' + response.errorText });
         }
-        enableSbmBtn();
+        btnSubmit.enable();
     };
 
     var loadOnError = function () {
         showErrorMessage({text:'Error loading into RiskSim'});
-        enableSbmBtn();
+        btnSubmit.enable();
     };
 
     var sbmBtnClick = function () {
         if (!validateFields()) {
             return;
         }
-        disableSbmBtn(this);
-        //gt.request(
-        //    {
-        //        method: 'POST',
-        //        contentType:'application/json',
-        //        postData: {evIds: JSON.stringify(evIds.getValues())},
-        //        url: settings.controlsDescriptors.securities.updateTrades_loadIntoRiskSimUrl,
-        //        onSuccess: loadOnSuccess,
-        //        onError: loadOnError
-        //    });
+
+        btnSubmit.loading();
 
         $.ajax({
             url: settings.controlsDescriptors.securities.updateTrades_loadIntoRiskSimUrl,
@@ -84,15 +61,10 @@ RS.loadIntoRiskSim = function ($parent) {
         });
     };
 
-    var clearBtnClick = function(){
-        evIds.clear();
-    };
-
     var validateFields = function () {
         var isValid = true;
 
         if (evIds.getValues().length===0) {
-            console.log($evIds);
             gt.addClass($evIds, 'error');
             isValid = false
         }
@@ -104,8 +76,7 @@ RS.loadIntoRiskSim = function ($parent) {
     };
 
     var evIds = gt.multipleInput($evIds);
-    gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-    gt.addEvent($btnClear, eventOnPointerEnd, clearBtnClick);
-
+    var btnSubmit = gt.customButton($btnSubmit,{submitCallBack: sbmBtnClick});
+    gt.customButton($btnClear,{submitCallBack: function(){evIds.clear();}});
 
 };
