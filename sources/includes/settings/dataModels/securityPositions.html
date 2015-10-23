@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    (function (rs) {
+
+        rs.settings.dataModels.securityPositionColumns = [
+            {
+                id:0,
+                name:'Strategy',
+                field:'Strategy'
+            },
+            {
+                id:1,
+                name:'Portfolio',
+                field:'Portfolio'
+            },
+            {
+                id:2,
+                name:'SecId',
+                field:'SecId'
+            }
+        ];
+
+        rs.settings.dataModels.securityPositions = [
+            {
+                Strategy: '12345',
+                Portfolio: 'FTMF',
+                SecId: '123'
+            },
+            {
+                Strategy: '54321',
+                Portfolio: 'AAAA',
+                SecId: '321'
+            }
+        ];
+    }(RS));
+</script>
+

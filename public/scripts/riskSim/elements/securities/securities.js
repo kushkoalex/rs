@@ -5,7 +5,7 @@ RS.securities = function ($parent) {
         tp = global.cnCt.tp,
         settings = rs.settings,
         doc = global.document,
-        data = settings.dataModels.securities,
+    //data = settings.dataModels.securities,
         eventOnPointerEnd = gt.deviceInfo.eventOnPointerEnd,
     //securities = settings.dataModels.securities,
         notifications = rs.notifications,
@@ -134,20 +134,25 @@ RS.securities = function ($parent) {
         $securityInfoContainer.innerHTML = '';
         var $fragment = global.document.createDocumentFragment();
 
-
         if (selectedSecurityId !== null) {
-            gt.request({
-                method: 'POST',
-                postData: {secId: selectedSecurityId},
-                url: settings.controlsDescriptors.securities.getDetailsUrl,
-                onSuccess: function (data) {
-                    tp('securityIndic', data, $fragment);
-                    $securityInfoContainer.appendChild($fragment)
-                },
-                onError: function () {
-                    showErrorMessage({text: loadingIndicErrorText});
-                }
-            });
+            if (settings.env === 'dev') {
+                tp('securityIndic', settings.dataModels.securityDetails, $fragment);
+                $securityInfoContainer.appendChild($fragment);
+            } else {
+
+                gt.request({
+                    method: 'POST',
+                    postData: {secId: selectedSecurityId},
+                    url: settings.controlsDescriptors.securities.getDetailsUrl,
+                    onSuccess: function (data) {
+                        tp('securityIndic', data, $fragment);
+                        $securityInfoContainer.appendChild($fragment);
+                    },
+                    onError: function () {
+                        showErrorMessage({text: loadingIndicErrorText});
+                    }
+                });
+            }
         }
         else {
             tp('securityInfoWrapperEmpty', {text: securityInfoWrapperEmptyText}, $fragment);
@@ -176,15 +181,28 @@ RS.securities = function ($parent) {
 
             var sbmBtnClick = function () {
                 //disableSbmBtn(this);
+
                 btnSubmit.loading();
-                gt.request(
-                    {
-                        method: 'POST',
-                        postData: {secId: selectedSecurityId, asOfDate: $asOfDate.value},
-                        url: settings.controlsDescriptors.securities.loadPositionsUrl,
-                        onSuccess: loadPositionsSuccess,
-                        onError: loadPositionsError
-                    });
+
+                if (settings.env === 'dev') {
+                    loadPositionsSuccess(
+                        {
+                            errorCode: 0,
+                            securityPositionColumns: settings.dataModels.securityPositionColumns,
+                            securityPositions: settings.dataModels.securityPositions
+                        }
+                    );
+                }
+                else {
+                    gt.request(
+                        {
+                            method: 'POST',
+                            postData: {secId: selectedSecurityId, asOfDate: $asOfDate.value},
+                            url: settings.controlsDescriptors.securities.loadPositionsUrl,
+                            onSuccess: loadPositionsSuccess,
+                            onError: loadPositionsError
+                        });
+                }
             };
 
 
@@ -258,14 +276,26 @@ RS.securities = function ($parent) {
                 showErrorMessage({text: error || loadingTradesErrorText});
             };
 
-            gt.request(
-                {
-                    method: 'POST',
-                    postData: {secId: selectedSecurityId},
-                    url: settings.controlsDescriptors.securities.loadTradesUrl,
-                    onSuccess: loadTradesSuccess,
-                    onError: loadTradesError
-                });
+
+            if (settings.env === 'dev') {
+                loadTradesSuccess(
+                    {
+                        errorCode: 0,
+                        tradeColumns: settings.dataModels.tradeColumns,
+                        trades: settings.dataModels.trades
+                    }
+                );
+            }
+            else {
+                gt.request(
+                    {
+                        method: 'POST',
+                        postData: {secId: selectedSecurityId},
+                        url: settings.controlsDescriptors.securities.loadTradesUrl,
+                        onSuccess: loadTradesSuccess,
+                        onError: loadTradesError
+                    });
+            }
 
         } else {
             tp('securityInfoWrapperEmpty', {text: securityInfoWrapperEmptyText}, $fragment);
@@ -298,18 +328,29 @@ RS.securities = function ($parent) {
             var sbmBtnSearchClick = function () {
                 //disableSearchSbmBtn(this);
                 btnSearchSubmit.loading();
-                gt.request(
-                    {
-                        method: 'POST',
-                        postData: {
-                            secId: selectedSecurityId,
-                            rsPriceDate: $rsPriceDate.value,
-                            vpmPriceDate: $vpmPriceDate.value
-                        },
-                        url: settings.controlsDescriptors.securities.loadPricesUrl,
-                        onSuccess: loadPricesSuccess,
-                        onError: loadPricesError
-                    });
+
+                if (settings.env === 'dev') {
+                    loadPricesSuccess(
+                        {
+                            errorCode: 0,
+                            prices: settings.dataModels.securityPrices
+                        }
+                    );
+                }
+                else {
+                    gt.request(
+                        {
+                            method: 'POST',
+                            postData: {
+                                secId: selectedSecurityId,
+                                rsPriceDate: $rsPriceDate.value,
+                                vpmPriceDate: $vpmPriceDate.value
+                            },
+                            url: settings.controlsDescriptors.securities.loadPricesUrl,
+                            onSuccess: loadPricesSuccess,
+                            onError: loadPricesError
+                        });
+                }
             };
 
 
@@ -415,8 +456,6 @@ RS.securities = function ($parent) {
                         }
 
                         gt.addEvent($cbSelectAll, eventOnPointerEnd, function () {
-
-                            console.log(items);
                             for (j = 0; j < items.length; j++) {
                                 items[j].checked = !!$cbSelectAll.checked;
                                 checkItem(items[j]);
@@ -436,14 +475,9 @@ RS.securities = function ($parent) {
             };
 
             var loadPricesError = function (error) {
-
-                setTimeout(function () {
-                    showErrorMessage({text: error || loadingPricesErrorText});
-                    //enableSearchSbmBtn();
-                    btnSearchSubmit.enable();
-                }, 2000);
-
-
+                showErrorMessage({text: error || loadingPricesErrorText});
+                //enableSearchSbmBtn();
+                btnSearchSubmit.enable();
             };
 
             //var disableSearchSbmBtn = function (ctx) {
@@ -514,12 +548,10 @@ RS.securities = function ($parent) {
 
         gt.removeClass($securityInfoWrapper, 'hidden');
 
-
         if (!currentTab) {
-            setCurrentMenuItemActive(tabs.$indicTab);
+            setCurrentMenuItemActive(tabs.$indicTab.n);
             loadDetails();
             currentTab = 1;
-
         }
         else {
             switch (currentTab) {
@@ -539,7 +571,7 @@ RS.securities = function ($parent) {
         }
     };
 
-    var getSecuritiesSuccess = function (data) {
+    var getSecuritiesSuccess = function (response) {
         var columns = ['SecId', 'VpmId', 'VpmSyCode'];
 
         $securityResultTable.innerHTML = '';
@@ -547,8 +579,8 @@ RS.securities = function ($parent) {
         $fragment = global.document.createDocumentFragment();
         tp('securityListHead', columns, $fragment);
 
-        if (data.Securities.length > 0) {
-            gt.each(data.Securities, function (item, i) {
+        if (response.Securities.length > 0) {
+            gt.each(response.Securities, function (item, i) {
                 item.odd = i % 2 == 0;
                 securityListItem = tp('securityListItem', item, $fragment);
                 gt.addEvent(securityListItem.r, eventOnPointerEnd, onSelectSecurity);
@@ -570,14 +602,18 @@ RS.securities = function ($parent) {
 
     var onChangeRequestQuery = function () {
         var values = getValues();
-        gt.request(
-            {
-                method: 'POST',
-                postData: {secId: values.SecurityId, secIdType: values.SecurityIdType},
-                url: settings.controlsDescriptors.securities.searchUrl,
-                onSuccess: getSecuritiesSuccess,
-                onError: getSecuritiesError
-            });
+        if (settings.env === 'dev') {
+            getSecuritiesSuccess({Securities: settings.dataModels.securities});
+        } else {
+            gt.request(
+                {
+                    method: 'POST',
+                    postData: {secId: values.SecurityId, secIdType: values.SecurityIdType},
+                    url: settings.controlsDescriptors.securities.searchUrl,
+                    onSuccess: getSecuritiesSuccess,
+                    onError: getSecuritiesError
+                });
+        }
     };
 
     gt.addEvent($secId, 'keyup', onChangeRequestQuery);

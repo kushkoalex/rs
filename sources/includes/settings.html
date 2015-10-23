@@ -14,12 +14,18 @@
         if (!('dataModels' in settings)) {
             settings.dataModels = {};
         }
+
+        settings.env = 'dev';
+
     }(RS));
 </script>
 
 include "../includes/settings/controlsDescriptors.html"
-<!--include "../includes/settings/dataModels/securities.html"-->
+include "../includes/settings/dataModels/securities.html"
 include "../includes/settings/dataModels/securityIdType.html"
 include "../includes/settings/dataModels/securityPrices.html"
+include "../includes/settings/dataModels/securityPositions.html"
+include "../includes/settings/dataModels/securityDetails.html"
+include "../includes/settings/dataModels/securityTrades.html"
 include "../includes/settings/dataModels/strategies.html"
 include "../includes/settings/dataModels/process.html"
