@@ -94,8 +94,8 @@ RS.updateTrades = function ($parent) {
     var evIds = gt.multipleInput($evIds);
     gt.datePicker($nominalSettleDate);
 
-    var btnSubmit = gt.customButton($btnSubmit,{submitCallBack: sbmBtnClick});
-    gt.customButton($btnClear,{submitCallBack:clearBtnClick});
+    var btnSubmit = gt.button($btnSubmit,{submitCallBack: sbmBtnClick});
+    gt.button($btnClear,{submitCallBack:clearBtnClick});
     //gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
     //gt.addEvent($btnClear, eventOnPointerEnd, clearBtnClick);
 };

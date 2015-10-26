@@ -4,15 +4,13 @@ RS.securities = function ($parent) {
         gt = global.GT,
         tp = global.cnCt.tp,
         settings = rs.settings,
-        doc = global.document,
-    //data = settings.dataModels.securities,
         eventOnPointerEnd = gt.deviceInfo.eventOnPointerEnd,
-    //securities = settings.dataModels.securities,
         notifications = rs.notifications,
         securitiesErrorMessageTimeout = rs.settings.controlsDescriptors.securities.errorMessageTimeout || 3000,
         build = tp('securities', $parent),
         $popupMessagesWrapper = build.messagesWrapper,
         loadingPositionsErrorText = 'Error loading security positions',
+        updatingSecurityErrorText = 'Error updating security',
         loadingTradesErrorText = 'Error loading security trades',
         loadingPricesErrorText = 'Error loading security prices',
         updatingPricesErrorText = 'Error updating security prices',
@@ -35,10 +33,6 @@ RS.securities = function ($parent) {
         securityListItem,
         selectedSecurityId = null,
         tabs,
-    //$indicTab,
-    //$positionsTab,
-    //$tradesTab,
-    //$pricesTab,
         currentTab,
         u;
 
@@ -62,17 +56,6 @@ RS.securities = function ($parent) {
             gt.addEvent(tabs[tab].n, eventOnPointerEnd, tabs[tab].fn);
         }
     };
-
-    //$indicTab = build.indicTab;
-    //$positionsTab = build.positionsTab;
-    //$tradesTab = build.tradesTab;
-    //$pricesTab = build.pricesTab;
-
-    //gt.addEvent($indicTab, eventOnPointerEnd, indicTabClick);
-    //gt.addEvent($positionsTab, eventOnPointerEnd, positionsTabClick);
-    //gt.addEvent($tradesTab, eventOnPointerEnd, tradesTabClick);
-    //gt.addEvent($pricesTab, eventOnPointerEnd, pricesTabClick);
-
 
     var setSubMenuItemsInactive = function () {
         var items = gt.$c('menu-item');
@@ -115,7 +98,7 @@ RS.securities = function ($parent) {
         var errorOptions = {
             text: error.text || error.description || 'error',
             $wrapper: $popupMessagesWrapper,
-            hideTimeout: securitiesErrorMessageTimeout
+            hideTimeout:error.hideTimeout|| securitiesErrorMessageTimeout
         };
         notifications.showError(errorOptions);
     };
@@ -124,32 +107,74 @@ RS.securities = function ($parent) {
         var announcementOptions = {
             text: announcement.text,
             $wrapper: $popupMessagesWrapper,
-            hideTimeout: securitiesErrorMessageTimeout
+            hideTimeout:announcement.hideTimeout|| securitiesErrorMessageTimeout
         };
         notifications.showAnnouncement(announcementOptions);
     };
 
     var loadDetails = function () {
 
+        var loadIndicSuccess = function (response) {
+            var build,
+                $accMethod,
+                $securitiesUpdateBtn;
+
+            $securityInfoContainer.innerHTML = '';
+            build = tp('securityIndic', response, $fragment);
+            $securityInfoContainer.appendChild($fragment);
+
+            $securitiesUpdateBtn = build.btnSubmit;
+            $accMethod = build.accMethod;
+
+            var updateSecurity = function () {
+                gt.removeClass($accMethod, 'error');
+
+                if ($accMethod.value != '') {
+
+                    btnUpdate.loading();
+
+                    gt.request({
+                        method: 'POST',
+                        postData: {secId: selectedSecurityId, accountingMethod: $accMethod.value},
+                        url: settings.controlsDescriptors.securities.updateSecurityUrl,
+                        onSuccess: function () {
+                            showAnnouncementMessage({text: 'Selected security has been updated', hideTimeout: 1000});
+                            btnUpdate.enable();
+                        },
+                        onError: function () {
+                            showErrorMessage({text: updatingSecurityErrorText});
+                            btnUpdate.enable();
+                        }
+                    });
+                }
+                else {
+                    gt.addClass($accMethod, 'error');
+                    showErrorMessage({text:'Please select the Accounting Method',hideTimeout: 1000})
+                }
+            };
+
+            var btnUpdate = gt.button($securitiesUpdateBtn, {submitCallBack: updateSecurity});
+        };
+
         $securityInfoContainer.innerHTML = '';
         var $fragment = global.document.createDocumentFragment();
 
         if (selectedSecurityId !== null) {
-            if (settings.env === 'dev') {
-                tp('securityIndic', settings.dataModels.securityDetails, $fragment);
-                $securityInfoContainer.appendChild($fragment);
-            } else {
 
+            tp('securityIndicLoading', $fragment);
+            $securityInfoContainer.appendChild($fragment);
+
+            if (settings.env === 'dev') {
+                loadIndicSuccess(settings.dataModels.securityDetails);
+            } else {
                 gt.request({
                     method: 'POST',
                     postData: {secId: selectedSecurityId},
                     url: settings.controlsDescriptors.securities.getDetailsUrl,
-                    onSuccess: function (data) {
-                        tp('securityIndic', data, $fragment);
-                        $securityInfoContainer.appendChild($fragment);
-                    },
+                    onSuccess: loadIndicSuccess,
                     onError: function () {
                         showErrorMessage({text: loadingIndicErrorText});
+                        $securityInfoContainer.innerHTML = '';
                     }
                 });
             }
@@ -207,7 +232,7 @@ RS.securities = function ($parent) {
 
 
             //gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
-            var btnSubmit = gt.customButton($btnSubmit, {submitCallBack: sbmBtnClick});
+            var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick});
 
             gt.datePicker($asOfDate);
 
@@ -505,8 +530,8 @@ RS.securities = function ($parent) {
             //};
 
             //gt.addEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
-            var btnSearchSubmit = gt.customButton($btnSearchSubmit, {submitCallBack: sbmBtnSearchClick});
-            var btnUpdateSubmit = gt.customButton($btnUpdateSubmit, {
+            var btnSearchSubmit = gt.button($btnSearchSubmit, {submitCallBack: sbmBtnSearchClick});
+            var btnUpdateSubmit = gt.button($btnUpdateSubmit, {
                 submitCallBack: sbmBtnUpdateClick,
                 isDisabled: true
             });

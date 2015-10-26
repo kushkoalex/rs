@@ -128,7 +128,7 @@ RS.pnlUpdate = function ($parent) {
     gt.datePicker($runDate);
     var portfolios = gt.multipleInput($portfolios);
     var securityIds = gt.multipleInput($securityIds);
-    var btnSubmit = gt.customButton($btnSubmit,{submitCallBack: sbmBtnClick});
+    var btnSubmit = gt.button($btnSubmit,{submitCallBack: sbmBtnClick});
 
     getStatus();
     refreshIntervalId = setInterval(getStatus, 3000);

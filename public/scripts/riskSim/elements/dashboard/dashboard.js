@@ -34,8 +34,8 @@ RS.dashboard = function ($parent) {
     };
 
 
-    var btn1 = gt.customButton($customBtn, {submitCallBack: onBtnClick});
-    var btn2 = gt.customButton($loadingBtn, {submitCallBack: onBtnClick});
+    var btn1 = gt.button($customBtn, {submitCallBack: onBtnClick});
+    var btn2 = gt.button($loadingBtn, {submitCallBack: onBtnClick});
 
 
 };

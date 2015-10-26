@@ -94,7 +94,7 @@ RS.excludeTrades = function ($parent) {
 
 
     var evIds = gt.multipleInput($evIds);
-    var btnSubmit = gt.customButton($btnSubmit,{submitCallBack: sbmBtnClick});
-    gt.customButton($btnClear,{submitCallBack: clearBtnClick});
+    var btnSubmit = gt.button($btnSubmit,{submitCallBack: sbmBtnClick});
+    gt.button($btnClear,{submitCallBack: clearBtnClick});
 
 };

@@ -76,7 +76,7 @@ RS.loadIntoRiskSim = function ($parent) {
     };
 
     var evIds = gt.multipleInput($evIds);
-    var btnSubmit = gt.customButton($btnSubmit,{submitCallBack: sbmBtnClick});
-    gt.customButton($btnClear,{submitCallBack: function(){evIds.clear();}});
+    var btnSubmit = gt.button($btnSubmit,{submitCallBack: sbmBtnClick});
+    gt.button($btnClear,{submitCallBack: function(){evIds.clear();}});
 
 };

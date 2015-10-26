@@ -19,7 +19,7 @@
                 },
                 {
                     c: 'form-control',
-                    C: tmpls.customButton({text: 'Clear', n: 'btnClear'})
+                    C: tmpls.button({text: 'Clear', n: 'btnClear'})
                 },
                 {
                     c: 'form-control',
@@ -55,7 +55,7 @@
                 },
                 {
                     c: 'form-control',
-                    C: tmpls.customButton({text: 'Clear', n: 'btnClear'})
+                    C: tmpls.button({text: 'Clear', n: 'btnClear'})
                 },
                 {
                     c: 'form-control',
@@ -80,7 +80,7 @@
                 },
                 {
                     c: 'form-control',
-                    C: tmpls.customButton({text: 'Clear', n: 'btnClear'})
+                    C: tmpls.button({text: 'Clear', n: 'btnClear'})
                 },
                 {
                     c: 'form-control',

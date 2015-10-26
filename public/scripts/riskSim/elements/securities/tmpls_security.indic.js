@@ -3,12 +3,32 @@
         gt = rs.global.GT,
         u;
 
-    tmpls.securityIndic = function (data) {
-        var widgetColor = 'color1';
+    tmpls.securityIndicLoading = function () {
+        return {c: 'security-indic-empty'}
+    };
 
+    tmpls.securityIndic = function (data) {
+        var widgetColor = 'color1',
+            selectItems = rs.settings.dataModels.accountingMethod,
+            items = [];
+        gt.cloneArray(selectItems, items);
+        items.unshift({text: '', value: ''});
         return [
             {
+                c: 'input-group inline', C: [
+                {
+                    c: 'form-control',
+                    C: tmpls.select({n: 'accMethod', items: items, title: 'Accounting Method:'})
+                },
+                {
+                    c: 'form-control',
+                    C: tmpls.loadingButton({text: 'Update', n: 'btnSubmit'})
+                }
+            ]
+            },
+            {
                 c: 'panels-container', C: [
+
                 tmpls.displayInfoWidget({color: widgetColor, title: 'Basic Information', items: data.BasicInfo}),
                 tmpls.displayInfoWidget({
                     color: widgetColor,
@@ -45,7 +65,7 @@
                         })
                         },
                         {
-                            e:'td',C:tmpls.displayInfoWidget({
+                            e: 'td', C: tmpls.displayInfoWidget({
                             color: widgetColor,
                             type: 'list',
                             showHeader: false,
@@ -57,14 +77,16 @@
                     ]
                     },
                     {
-                        e:'tr',C:{e:'td',a:{colspan:'2'},C:tmpls.displayInfoWidget({
-                        color: widgetColor,
-                        type: 'list',
-                        showHeader: true,
-                        columns: ['ScheduleDate', 'DueDate', 'Price', 'Amount', 'ScheduleType'],
-                        title: 'Amortization Schedules',
-                        items: data.AmortizationSchedule
-                    })}
+                        e: 'tr', C: {
+                        e: 'td', a: {colspan: '2'}, C: tmpls.displayInfoWidget({
+                            color: widgetColor,
+                            type: 'list',
+                            showHeader: true,
+                            columns: ['ScheduleDate', 'DueDate', 'Price', 'Amount', 'ScheduleType'],
+                            title: 'Amortization Schedules',
+                            items: data.AmortizationSchedule
+                        })
+                    }
                     },
                     {
                         e: 'tr', C: [
@@ -79,7 +101,7 @@
                         })
                         },
                         {
-                            e:'td',C:tmpls.displayInfoWidget({
+                            e: 'td', C: tmpls.displayInfoWidget({
                             color: widgetColor,
                             type: 'list',
                             showHeader: true,
@@ -91,27 +113,31 @@
                     ]
                     },
                     {
-                        e:'tr',C:{e:'td',a:{colspan:'2'},C:tmpls.displayInfoWidget({
-                        color: widgetColor,
-                        type: 'list',
-                        showHeader: true,
-                        columns: ['EffectiveDate', 'Coupon', 'EndDate', 'RateOptionCode'],
-                        title: 'Coupon Adjustment Schedules',
-                        items: data.CouponAdjustmentSchedule
-                    })}
+                        e: 'tr', C: {
+                        e: 'td', a: {colspan: '2'}, C: tmpls.displayInfoWidget({
+                            color: widgetColor,
+                            type: 'list',
+                            showHeader: true,
+                            columns: ['EffectiveDate', 'Coupon', 'EndDate', 'RateOptionCode'],
+                            title: 'Coupon Adjustment Schedules',
+                            items: data.CouponAdjustmentSchedule
+                        })
+                    }
                     },
                     {
-                        e:'tr',C:{e:'td',a:{colspan:'2'},C:tmpls.displayInfoWidget({
-                        color: widgetColor, type: 'list',
-                        showHeader: true,
-                        columns: ['StartDate', 'EndDate', 'Premium'],
-                        title: 'PIK Info', items: data.PikInfo
-                    })}
+                        e: 'tr', C: {
+                        e: 'td', a: {colspan: '2'}, C: tmpls.displayInfoWidget({
+                            color: widgetColor, type: 'list',
+                            showHeader: true,
+                            columns: ['StartDate', 'EndDate', 'Premium'],
+                            title: 'PIK Info', items: data.PikInfo
+                        })
+                    }
                     },
                     {
                         e: 'tr', C: [
                         {
-                            e: 'td', C:  tmpls.displayInfoWidget({
+                            e: 'td', C: tmpls.displayInfoWidget({
                             color: widgetColor,
                             type: 'list',
                             showHeader: true,
@@ -121,7 +147,7 @@
                         })
                         },
                         {
-                            e:'td',C:tmpls.displayInfoWidget({
+                            e: 'td', C: tmpls.displayInfoWidget({
                             color: widgetColor,
                             type: 'list',
                             showHeader: true,
@@ -133,19 +159,21 @@
                     ]
                     },
                     {
-                        e:'tr',C:{e:'td',a:{colspan:'2'},C:tmpls.displayInfoWidget({
-                        color: widgetColor,
-                        type: 'list',
-                        showHeader: true,
-                        columns: ['ElectionDate', 'Frequency', 'FixingIndex', 'Tenor', 'OddEndDate', 'CouponDayType'],
-                        title: 'Rate Election',
-                        items: data.RateElection
-                    })}
+                        e: 'tr', C: {
+                        e: 'td', a: {colspan: '2'}, C: tmpls.displayInfoWidget({
+                            color: widgetColor,
+                            type: 'list',
+                            showHeader: true,
+                            columns: ['ElectionDate', 'Frequency', 'FixingIndex', 'Tenor', 'OddEndDate', 'CouponDayType'],
+                            title: 'Rate Election',
+                            items: data.RateElection
+                        })
+                    }
                     },
                     {
                         e: 'tr', C: [
                         {
-                            e: 'td', C:  tmpls.displayInfoWidget({
+                            e: 'td', C: tmpls.displayInfoWidget({
                             color: widgetColor,
                             type: 'list',
                             showHeader: true,
@@ -155,7 +183,7 @@
                         })
                         },
                         {
-                            e:'td',C:tmpls.displayInfoWidget({
+                            e: 'td', C: tmpls.displayInfoWidget({
                             color: widgetColor,
                             type: 'list',
                             showHeader: true,

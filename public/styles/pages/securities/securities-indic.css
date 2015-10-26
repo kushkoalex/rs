@@ -6,3 +6,18 @@
 .panels-container table td {
     vertical-align: top;
 }
+
+.security-indic-empty {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /*width: 16px;*/
+    /*height: 16px;*/
+    position: absolute;
+    /*top: 50%;*/
+    /*left: 50%;*/
+    margin-top: -8px;
+    margin-left: -8px;
+    background: url("../../../images/loading.gif") no-repeat 50% 50%;
+}
