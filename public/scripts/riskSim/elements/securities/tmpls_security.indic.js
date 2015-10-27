@@ -10,9 +10,18 @@
     tmpls.securityIndic = function (data) {
         var widgetColor = 'color1',
             selectItems = rs.settings.dataModels.accountingMethod,
-            items = [];
+            items = [],
+            i;
         gt.cloneArray(selectItems, items);
+
+        for (i = 0; i < items.length; i++) {
+            if (items[i].value === data.AccountingMethod) {
+                items[i].selected = true;
+            }
+        }
+
         items.unshift({text: '', value: ''});
+
         return [
             {
                 c: 'input-group inline', C: [

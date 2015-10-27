@@ -80,7 +80,6 @@ RS.updateTrades = function ($parent) {
         var isValid = true;
 
         if (evIds.getValues().length === 0) {
-            console.log($evIds);
             gt.addClass($evIds, 'error');
             isValid = false
         }

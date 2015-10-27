@@ -23,11 +23,7 @@ RS.dashboard = function ($parent) {
     gt.multipleInput($evIds);
 
     var onBtnClick = function (e) {
-
-        console.log(e.target);
-
         btn2.loading();
-
         setTimeout(function () {
             btn2.enable();
         }, 1000);

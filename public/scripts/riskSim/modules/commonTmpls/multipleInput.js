@@ -90,27 +90,21 @@
             var
                 data = [],
                 cb = window.clipboardData;
-
             if (cb) {
                 data = cb.getData('Text') || '';
                 data = data.replace(/\t|(\r\n)/g, ';'); // replace tabs and new-line to semicolons
-                data = data.replace(/[^0-9;]/g, ''); // remove invalid symbols
+                //data = data.replace(/[^0-9;]/g, ''); // remove invalid symbols
                 data = data.replace(/^[;|\s]{1,}/g, ''); // remove semicolon at the start
                 data = data.replace(/[;]{2,}/g, ';'); // remove semicolon duplicates
                 data = data.replace(/[;|\s]{1,}$/g, ''); // remove semicolon at the start
                 data = data.split(';');
-
-                data = _ids.concat(data);
-
                 data = data.join(delimiter);
-
                 setTimeout(function () {
                     setValues(data, true);
                 }, 100);
                 e.stopPropagation();
                 return false;
             }
-
         };
 
         gt.addEvent($input, 'keyup', function (e) {

@@ -43,7 +43,6 @@ RS.excludeTrades = function ($parent) {
 
     var loadOnError = function (e) {
         showErrorMessage({text: 'Error excluding trades '});
-        console.log(e);
         btnSubmit.enable();
     };
 

@@ -33,9 +33,6 @@
             a: {name: options.name || ''},
             C: items
         });
-
-        //console.log(inputWrapper);
-
         return inputWrapper;
     }
 }(RS, GT));

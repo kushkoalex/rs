@@ -75,7 +75,7 @@
 
     tmpls.securityPricesTableItem = function (price) {
         return{e:'tr', c:price.odd===true?'odd':'' ,n:'row', C:[
-            {e:'td',C:{e:'input',n:'cb' ,a:{type:'checkbox',name:price.SecId+'_#_'+price.PortfolioId+ '_#_' + price.VpmPriceDate + '_#_' + price.EffectivePrice},c:'riskSimPriceItemCheckbox'}},
+            {e:'td',C:{e:'input',n:'cb' ,a:{type:'checkbox',name:price.SecId+'_#_'+price.PortfolioId+ '_#_' + price.VpmPriceDate + '_#_' + price.EffectivePrice+'_#_'+price.RsPriceDate},c:'riskSimPriceItemCheckbox'}},
             {e:'td',t:price.Code},
             {e:'td',t:price.SecId},
             {e:'td',t:price.SyId},
