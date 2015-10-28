@@ -13,6 +13,7 @@ RS.pnlUpdate = function ($parent) {
         $portfolios = build.portfolios,
         $securityIds = build.securityIds,
         refreshIntervalId,
+        statusChecked = false,
         u;
 
 
@@ -79,7 +80,6 @@ RS.pnlUpdate = function ($parent) {
     };
 
 
-
     //gt.addEvent($btnSubmit, eventOnPointerEnd, sbmBtnClick);
 
     var getStatus = function () {
@@ -93,9 +93,6 @@ RS.pnlUpdate = function ($parent) {
 
             if (!status.errorCode) {
                 statusDetails.innerHTML = '';
-                for (var i = 0; i < status.resultItems.length; i++) {
-                    statusDetails.innerHTML += status.resultItems[i].process + ' | ' + status.resultItems[i].details + ' | ' + status.resultItems[i].progress + '<br>';
-                }
 
                 if (status.completed === 1) {
                     if (refreshIntervalId) {
@@ -109,6 +106,16 @@ RS.pnlUpdate = function ($parent) {
                     btnSubmit.disable();
                 }
 
+                if (status.completed === 1 && !statusChecked) {
+                    statusDetails.innerHTML += 'There are no running processes'
+                } else {
+                    for (var i = 0; i < status.resultItems.length; i++) {
+                        statusDetails.innerHTML += status.resultItems[i].process + ' | ' + status.resultItems[i].details + ' | ' + status.resultItems[i].progress + '<br>';
+                    }
+                }
+
+                statusChecked = true;
+
             } else {
                 statusDetails.innerHTML = status.errorMessage;
                 clearInterval(refreshIntervalId);
@@ -121,15 +128,15 @@ RS.pnlUpdate = function ($parent) {
             btnSubmit.enable();
             console.log(error);
         }).always(function (data) {
-                //alert("finished");
-            });
+            //alert("finished");
+        });
     };
 
     gt.datePicker($runDate);
     var portfolios = gt.multipleInput($portfolios);
     var securityIds = gt.multipleInput($securityIds);
-    var btnSubmit = gt.button($btnSubmit,{submitCallBack: sbmBtnClick});
+    var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick});
 
-    getStatus();
+    //getStatus();
     refreshIntervalId = setInterval(getStatus, 3000);
 };

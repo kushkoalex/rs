@@ -249,16 +249,57 @@ RS.securities = function ($parent) {
             //};
 
             var loadPositionsSuccess = function (response) {
-                if (response.errorCode === 0) {
-                    var data = response.securityPositions,
-                        columns = response.securityPositionColumns;
+                var getColumns = function (obj) {
+                    var i=0,
+                        result = [];
 
-                    rs.slickGrid("#securityPositionsGrid", columns, data);
-                } else {
-                    showErrorMessage({text: response.errorText || loadingPositionsErrorText})
-                }
-                //enableSbmBtn();
+                    for (var column in obj) {
+                        result.push({
+                            id: i,
+                            name: column,
+                            field: column
+                        });
+                        i++;
+                    }
+                    return result;
+                };
+
                 btnSubmit.enable();
+
+                if (response.errorCode === 0) {
+                    var data = response.securityPositions;
+
+                    var positions = [],
+                        columns = [];
+
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var pos = {};
+                            for (var obj in data[i]) {
+                                pos[data[i][obj].Key] = data[i][obj].Value;
+                            }
+                            positions.push(pos)
+                        }
+                        columns = getColumns(positions[0]);
+                    }
+
+                    //rs.slickGrid("#securityPositionsGrid", columns, data);
+                    rs.slickGrid("#securityPositionsGrid", columns, positions);
+                } else {
+                    showErrorMessage({ text: response.errorText || loadingPositionsErrorText })
+                }
+
+
+                //btnSubmit.enable();
+                //if (response.errorCode === 0) {
+                //    var data = response.securityPositions,
+                //        columns = response.securityPositionColumns;
+                //
+                //    rs.slickGrid("#securityPositionsGrid", columns, data);
+                //} else {
+                //    showErrorMessage({text: response.errorText || loadingPositionsErrorText})
+                //}
+
             };
 
             var loadPositionsError = function (error) {
