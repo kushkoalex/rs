@@ -112,6 +112,21 @@ RS.securities = function ($parent) {
         notifications.showAnnouncement(announcementOptions);
     };
 
+    var getColumns = function (obj) {
+        var i=0,
+            result = [];
+
+        for (var column in obj) {
+            result.push({
+                id: i,
+                name: column,
+                field: column
+            });
+            i++;
+        }
+        return result;
+    };
+
     var loadDetails = function () {
 
         var loadIndicSuccess = function (response) {
@@ -185,6 +200,8 @@ RS.securities = function ($parent) {
         }
     };
 
+
+
     var loadPositions = function () {
 
         var $fragment = global.document.createDocumentFragment(),
@@ -249,20 +266,6 @@ RS.securities = function ($parent) {
             //};
 
             var loadPositionsSuccess = function (response) {
-                var getColumns = function (obj) {
-                    var i=0,
-                        result = [];
-
-                    for (var column in obj) {
-                        result.push({
-                            id: i,
-                            name: column,
-                            field: column
-                        });
-                        i++;
-                    }
-                    return result;
-                };
 
                 btnSubmit.enable();
 
@@ -329,13 +332,40 @@ RS.securities = function ($parent) {
             $securityTradesContentContainer = build.securityTradesContentContainer;
 
             var loadTradesSuccess = function (response) {
+
                 if (response.errorCode === 0) {
-                    var data = response.trades,
-                        columns = response.tradeColumns;
-                    rs.slickGrid("#securityTradesGrid", columns, data);
+                    var data = response.trades;
+
+                    var trades = [],
+                        columns = [];
+
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var trd = {};
+                            for (var obj in data[i]) {
+                                trd[data[i][obj].Key] = data[i][obj].Value;
+                            }
+                            trades.push(trd)
+                        }
+                        columns = getColumns(trades[0]);
+                    }
+
+                    //rs.slickGrid("#securityPositionsGrid", columns, data);
+                    rs.slickGrid("#securityTradesGrid", columns, trades);
                 } else {
                     showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }
+
+
+
+
+                //if (response.errorCode === 0) {
+                //    var data = response.trades,
+                //        columns = response.tradeColumns;
+                //    rs.slickGrid("#securityTradesGrid", columns, data);
+                //} else {
+                //    showErrorMessage({text: response.errorText || loadingPositionsErrorText})
+                //}
             };
 
             var loadTradesError = function (error) {

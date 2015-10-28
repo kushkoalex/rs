@@ -103,7 +103,7 @@ RS.pnlUpdate = function ($parent) {
                 }
                 else {
                     //disableSbmBtn($btnSubmit);
-                    btnSubmit.disable();
+                    btnSubmit.loading();
                 }
 
                 if (status.completed === 1 && !statusChecked) {
