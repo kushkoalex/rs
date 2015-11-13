@@ -3,7 +3,8 @@ GT.ready(function(gt,global){
         $dashboard = gt.$('dashboard'),
         $securities = gt.$('securities'),
         $tradesUpdate = gt.$('tradesUpdate'),
-        $pnlUpdate = gt.$('pnlUpdate');
+        $pnlUpdate = gt.$('pnlUpdate'),
+        $opsDashboard = gt.$('opsDashboard');
 
     global.cnCt.bindTemplates(rs.tmpls);
 
@@ -20,5 +21,8 @@ GT.ready(function(gt,global){
     }
     if ($pnlUpdate !== null) {
         rs.pnlUpdate($pnlUpdate);
+    }
+    if ($opsDashboard !== null) {
+        rs.opsDashboard($opsDashboard);
     }
 });

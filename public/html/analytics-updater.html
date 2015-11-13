@@ -33,6 +33,8 @@
         <script type="text/javascript" src="../scripts/riskSim/elements/dashboard/tmpls_dashboard.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/elements/notifications/notifications.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/elements/notifications/tmpls_notifications.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/opsDashboard/opsDashboard.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/opsDashboard/tmpls_opsDashboard.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/elements/pnlUpdate/pnlUpdate.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/elements/pnlUpdate/tmpls_pnlUpdate.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/elements/securities/securities.js?v=0.0.1"></script>
@@ -71,6 +73,7 @@
         <link rel="stylesheet" type="text/css" href="../styles/pages/analytics-updater/pnl-update.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/analytics-updater/trades-update.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/dashboard/dashboard.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/ops-dashboard/ops-dashboard.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/securities-indic.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/securities-menu.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/securities.css?v=0.0.1" media="screen"/>
@@ -123,6 +126,7 @@
                 updateTrades_TradesExcludeUrl:'',
                 updateSecurityUrl:'',
                 reportGenRunUrl:'',
+                opsDashboardSendEmainUrl:'',
                 getReportGenStatusUrl:'/getstatus',
                 prevBusinessDay:'09/01/2015',
                 errorMessageTimeout:3000
@@ -4602,6 +4606,7 @@
             <li><a href="dashboard.html">Dashboard</a></li>
             <li><a href="securities.html">Securities</a></li>
             <li class="active">Analytics Updater</li>
+            <li><a href="ops-dashboard.html">OPS Dashboard</a></li>
         </ul>
     </div>
     <div class="content-layout">
