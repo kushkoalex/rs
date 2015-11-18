@@ -1,0 +1,68 @@
+<script type="text/javascript">
+    (function (rs) {
+        rs.settings.dataModels.userSettings ={ grids : [
+            {
+                gridId:0,
+                gridName:'Positions',
+                gridColumns: [
+                    {
+                        id:0,
+                        columnName:'Portfolio',
+                        dataFormat:'',
+                        minWidth:100,
+                        displayOrder:0
+                    },
+                    {
+                        id:1,
+                        columnName:'Strategy',
+                        dataFormat:'',
+                        minWidth:100,
+                        displayOrder:1
+                    },
+                    {
+                        id:2,
+                        columnName:'secid',
+                        dataFormat:'',
+                        minWidth:100,
+                        displayOrder:2
+                    },
+                    {
+                        id:3,
+                        columnName:'reportdate',
+                        dataFormat:'MM-dd-yyyy',
+                        minWidth:100,
+                        displayOrder:3
+                    }
+                ]
+            },
+            {
+                gridId:1,
+                gridName:'Trades',
+                gridColumns: [
+                    {
+                        id:0,
+                        columnName:'EvID',
+                        dataFormat:'',
+                        minWidth:100,
+                        displayOrder:0
+                    },
+                    {
+                        id:1,
+                        columnName:'Portfolio',
+                        dataFormat:'',
+                        minWidth:100,
+                        displayOrder:1
+                    },
+                    {
+                        id:2,
+                        columnName:'Strategy',
+                        dataFormat:'',
+                        minWidth:100,
+                        displayOrder:2
+                    }
+                ]
+            }
+        ]}
+    }(RS));
+</script>
+

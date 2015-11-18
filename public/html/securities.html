@@ -49,6 +49,8 @@
         <script type="text/javascript" src="../scripts/riskSim/elements/tradesUpdate/trades.load.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/elements/tradesUpdate/trades.update.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/elements/tradesUpdate/tradesUpdate.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/userSettings/tmpls_userSettings.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/elements/userSettings/userSettings.js?v=0.0.1"></script>
         <script type="text/javascript" src="../vendor/scripts/jquery-1.7.min.js?v=0.0.1"></script>
         <script type="text/javascript" src="../vendor/scripts/jquery-ui-1.10.3.min.js?v=0.0.1"></script>
         <script type="text/javascript" src="../vendor/scripts/jquery.event.drag-2.2.js?v=0.0.1"></script>
@@ -80,6 +82,8 @@
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/security-positions.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/security-prices.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/security-trades.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/user-settings/grid-settings-widget.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/user-settings/user-settings.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../vendor/styles/jquery-ui-1.10.3.min.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../vendor/styles/slick.grid.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/common.css?v=0.0.1" media="screen"/>
@@ -4590,6 +4594,75 @@
     </script>
 
 
+    <script type="text/javascript">
+        (function (rs) {
+            rs.settings.dataModels.userSettings ={ grids : [
+                {
+                    gridId:0,
+                    gridName:'Positions',
+                    gridColumns: [
+                        {
+                            id:0,
+                            columnName:'Portfolio',
+                            dataFormat:'',
+                            minWidth:100,
+                            displayOrder:0
+                        },
+                        {
+                            id:1,
+                            columnName:'Strategy',
+                            dataFormat:'',
+                            minWidth:100,
+                            displayOrder:1
+                        },
+                        {
+                            id:2,
+                            columnName:'secid',
+                            dataFormat:'',
+                            minWidth:100,
+                            displayOrder:2
+                        },
+                        {
+                            id:3,
+                            columnName:'reportdate',
+                            dataFormat:'MM-dd-yyyy',
+                            minWidth:100,
+                            displayOrder:3
+                        }
+                    ]
+                },
+                {
+                    gridId:1,
+                    gridName:'Trades',
+                    gridColumns: [
+                        {
+                            id:0,
+                            columnName:'EvID',
+                            dataFormat:'',
+                            minWidth:100,
+                            displayOrder:0
+                        },
+                        {
+                            id:1,
+                            columnName:'Portfolio',
+                            dataFormat:'',
+                            minWidth:100,
+                            displayOrder:1
+                        },
+                        {
+                            id:2,
+                            columnName:'Strategy',
+                            dataFormat:'',
+                            minWidth:100,
+                            displayOrder:2
+                        }
+                    ]
+                }
+            ]}
+        }(RS));
+    </script>
+
+
 
 </head>
 <body>
@@ -4607,6 +4680,7 @@
             <li class="active">Securities</li>
             <li><a href="trades-update.html">Analytics Updater</a></li>
             <li><a href="ops-dashboard.html">OPS Dashboard</a></li>
+            <li><a href="user-settings.html">Settings</a></li>
         </ul>
     </div>
     <div class="content-layout">

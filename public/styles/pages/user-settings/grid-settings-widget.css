@@ -1,0 +1,30 @@
+.grid-settings-widget{
+    margin: 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    background-color: #ffffff;
+    display: inline-block;
+    vertical-align: top;
+    border: 1px solid #d9dfe1;
+}
+.grid-settings-widget .header{
+    background-color: #d9dfe1;
+    color: #4c4c4c;
+}
+
+.grid-settings-widget .header .title{
+    color: #4c4c4c;
+    text-align: center;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.grid-settings-widget .item{
+    padding: 2px 5px;
+}
+
+.grid-settings-widget .item .item-control{
+    display: inline-block;
+}
