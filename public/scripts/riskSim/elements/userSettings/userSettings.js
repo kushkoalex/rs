@@ -28,6 +28,8 @@ RS.userSettings = function ($parent) {
 
         $fragmentGrid = global.document.createDocumentFragment();
 
+        columnBuild = tp('gridSettingsWidgetColumnHeader', $fragmentGrid);
+
         gt.each(grid.gridColumns, function(gridColumn){
 
             columnBuild = tp('gridSettingsWidgetColumn', gridColumn, $fragmentGrid);

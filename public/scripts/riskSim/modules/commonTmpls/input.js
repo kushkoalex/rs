@@ -1,5 +1,6 @@
 (function (rs) {
-    var tmpls = rs.tmpls;
+    var tmpls = rs.tmpls,
+        u;
 
     tmpls.input = function (options) {
         var inputWrapper = {c: 'input-wrapper', C: []};
@@ -10,16 +11,22 @@
             inputWrapper.C.push({c: 'title', t: options.title})
         }
 
-        if(options.type === 'datePicker'){
+        if (options.type === 'datePicker') {
             inputWrapper.c += ' hasCalendar';
         }
 
         var el = {
             e: 'input',
-            a: {type:'text', id:options.name, name: options.name || '', value: options.value || '', placeholder: options.placeholder || ''}
+            a: {
+                type: 'text',
+                id: options.name || '',
+                name: options.name || '',
+                value: options.value !== u ? options.value : '',
+                placeholder: options.placeholder !== u ? options.placeholder : ''
+            }
         };
 
-        if(options.n){
+        if (options.n) {
             el.n = options.n;
         }
 
