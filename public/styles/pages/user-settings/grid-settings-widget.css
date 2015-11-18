@@ -34,6 +34,10 @@
     width: 100px;
 }
 
+.grid-settings-widget .item .item-control.column-name-checkbox{
+    width: 20px;
+}
+
 .grid-settings-widget .item .item-control.column-name-input-width{
     width: 50px;
 }
@@ -59,4 +63,10 @@
 .grid-settings-widget .item-control.column-name-input-dataFormat input[type="text"],
 .grid-settings-widget .item-control.column-name-input-displayOrder input[type="text"]{
     border-left: none;
+}
+
+.grid-settings-widget .item.disabled .item-control.column-name-label,
+.grid-settings-widget .item.disabled .item-control input[type="text"]
+{
+    color: #cccccc;
 }

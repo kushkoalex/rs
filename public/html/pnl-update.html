@@ -24,6 +24,7 @@
         <script type="text/javascript" src="../scripts/libs/cnCt/cnCt.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/RS.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/button.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/checkbox.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/datePicker.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/displayInfoWidget.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/modules/commonTmpls/input.js?v=0.0.1"></script>
@@ -134,6 +135,10 @@
                 getReportGenStatusUrl:'/getstatus',
                 prevBusinessDay:'09/01/2015',
                 errorMessageTimeout:3000
+            };
+
+            controlsDescriptors.userSettings = {
+                saveUrl:''
             };
 
             //controlsDescriptors.multipleInputSplitRegex = '/\s?[, ]\s?/';
@@ -4606,28 +4611,32 @@
                             columnName:'Portfolio',
                             dataFormat:'',
                             minWidth:100,
-                            displayOrder:0
+                            displayOrder:0,
+                            active:false
                         },
                         {
                             id:1,
                             columnName:'Strategy',
                             dataFormat:'',
                             minWidth:100,
-                            displayOrder:1
+                            displayOrder:1,
+                            active:true
                         },
                         {
                             id:2,
                             columnName:'secid',
                             dataFormat:'',
                             minWidth:100,
-                            displayOrder:2
+                            displayOrder:2,
+                            active:false
                         },
                         {
                             id:3,
                             columnName:'reportdate',
                             dataFormat:'MM-dd-yyyy',
                             minWidth:100,
-                            displayOrder:3
+                            displayOrder:3,
+                            active:false
                         }
                     ]
                 },
@@ -4640,21 +4649,24 @@
                             columnName:'EvID',
                             dataFormat:'',
                             minWidth:100,
-                            displayOrder:0
+                            displayOrder:0,
+                            active:true
                         },
                         {
                             id:1,
                             columnName:'Portfolio',
                             dataFormat:'',
                             minWidth:100,
-                            displayOrder:1
+                            displayOrder:1,
+                            active:false
                         },
                         {
                             id:2,
                             columnName:'Strategy',
                             dataFormat:'',
                             minWidth:100,
-                            displayOrder:2
+                            displayOrder:2,
+                            active:true
                         }
                     ]
                 }

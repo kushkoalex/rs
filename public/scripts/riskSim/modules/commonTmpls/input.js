@@ -15,15 +15,21 @@
             inputWrapper.c += ' hasCalendar';
         }
 
+        var attributes = {
+            type: 'text',
+            id: options.name || '',
+            name: options.name || '',
+            value: options.value !== u ? options.value : '',
+            placeholder: options.placeholder !== u ? options.placeholder : ''
+        };
+
+        if(options.disabled===true){
+            attributes.disabled='disabled';
+        }
+
         var el = {
             e: 'input',
-            a: {
-                type: 'text',
-                id: options.name || '',
-                name: options.name || '',
-                value: options.value !== u ? options.value : '',
-                placeholder: options.placeholder !== u ? options.placeholder : ''
-            }
+            a: attributes
         };
 
         if (options.n) {
