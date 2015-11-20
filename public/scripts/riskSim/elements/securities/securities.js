@@ -112,18 +112,52 @@ RS.securities = function ($parent) {
         notifications.showAnnouncement(announcementOptions);
     };
 
-    var getColumns = function (obj) {
-        var i=0,
-            result = [];
 
-        for (var column in obj) {
-            result.push({
+    var getCurrentColumn = function(columns, value){
+        for(var i=0;i<columns.length;i++){
+            if(columns[i].ColumnName===value){
+                return columns[i];
+            }
+        }
+    };
+
+    var  compare = function(a,b) {
+        if (a.displayOrder < b.displayOrder)
+            return -1;
+        if (a.displayOrder > b.displayOrder)
+            return 1;
+        return 0;
+    };
+
+    var getColumns = function (columns, columnsSettings) {
+        var i = 0,
+            result = [],
+            item,
+            field;
+
+        for (var column in columns) {
+            item = {
                 id: i,
                 name: column,
                 field: column
-            });
+            };
+
+            field = getCurrentColumn(columnsSettings,column);
+
+            if(field){
+                item.width = field.MinWidth;
+                item.displayOrder = field.DisplayOrder;
+            }
+            else{
+                item.displayOrder = 0;
+            }
+
+            result.push(item);
             i++;
         }
+
+        result.sort(compare);
+
         return result;
     };
 
@@ -271,6 +305,7 @@ RS.securities = function ($parent) {
 
                 if (response.errorCode === 0) {
                     var data = response.securityPositions;
+                    var positionColumns =  response.securityPositionColumns;
 
                     var positions = [],
                         columns = [];
@@ -283,7 +318,7 @@ RS.securities = function ($parent) {
                             }
                             positions.push(pos)
                         }
-                        columns = getColumns(positions[0]);
+                        columns = getColumns(positions[0], positionColumns);
                     }
 
                     //rs.slickGrid("#securityPositionsGrid", columns, data);
@@ -335,6 +370,7 @@ RS.securities = function ($parent) {
 
                 if (response.errorCode === 0) {
                     var data = response.trades;
+                    var tradeColumns =  response.tradeColumns;
 
                     var trades = [],
                         columns = [];
@@ -347,7 +383,7 @@ RS.securities = function ($parent) {
                             }
                             trades.push(trd)
                         }
-                        columns = getColumns(trades[0]);
+                        columns = getColumns(trades[0], tradeColumns);
                     }
 
                     //rs.slickGrid("#securityPositionsGrid", columns, data);
