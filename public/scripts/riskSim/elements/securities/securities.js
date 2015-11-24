@@ -377,11 +377,11 @@ RS.securities = function ($parent) {
 
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
-                            var trd = {};
+                            var trade = {};
                             for (var obj in data[i]) {
-                                trd[data[i][obj].Key] = data[i][obj].Value;
+                                trade[data[i][obj].Key] = data[i][obj].Value;
                             }
-                            trades.push(trd)
+                            trades.push(trade)
                         }
                         columns = getColumns(trades[0], tradeColumns);
                     }
