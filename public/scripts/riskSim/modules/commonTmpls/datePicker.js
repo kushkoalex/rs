@@ -7,15 +7,15 @@
 }(RS));
 
 
-(function (gt) {
+(function (gt, rs) {
     gt.datePicker = function($object){
         $($object).datepicker({
             showOn: "button",
             buttonText:'',
-            buttonImage:'../images/calendar.png',
+            buttonImage: rs.settings.controlsDescriptors.siteSettings.datePickerCalendarImageUrl,
             buttonImageOnly: false,
             changeMonth: true,
             changeYear: true
         });
     }
-})(GT);
+})(GT, RS);
