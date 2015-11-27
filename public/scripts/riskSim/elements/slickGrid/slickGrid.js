@@ -41,10 +41,12 @@
 
         grid.onHeaderRowCellRendered.subscribe(function (e, args) {
             $(args.node).empty();
-            $("<input type='text'>")
-                .data("columnId", args.column.id)
-                .val(columnFilters[args.column.id])
-                .appendTo(args.node);
+            if(args.column.field !== "priceCheckbox") {
+                $("<input type='text'>")
+                    .data("columnId", args.column.id)
+                    .val(columnFilters[args.column.id])
+                    .appendTo(args.node);
+            }
         });
         if (data !== u) {
 

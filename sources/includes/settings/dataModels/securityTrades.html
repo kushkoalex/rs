@@ -3,33 +3,30 @@
 
         rs.settings.dataModels.tradeColumns = [
             {
-                id:0,
-                name:'EvId',
-                field:'EvId'
+                ColumnName:'EvId',
+                DataFormat:'',
+                DisplayOrder:1,
+                MinWidth:150
             },
             {
-                id:1,
-                name:'Portfolio',
-                field:'Portfolio'
-            },
-            {
-                id:2,
-                name:'SecId',
-                field:'SecId'
+                ColumnName:'Portfolio',
+                DataFormat:'',
+                DisplayOrder:2,
+                MinWidth:150
             }
         ];
 
         rs.settings.dataModels.trades = [
-            {
-                EvId: '12345',
-                Portfolio: 'FTMF',
-                SecId: '123'
-            },
-            {
-                EvId: '54321',
-                Portfolio: 'AAAA',
-                SecId: '321'
-            }
+            [
+                {Key:'EvId',Value:'12345'},
+                {Key:'Portfolio',Value:'FTMF'},
+                {Key:'SecId',Value:'123'}
+            ],
+            [
+                {Key:'EvId',Value:'54321'},
+                {Key:'Portfolio',Value:'AAAA'},
+                {Key:'SecId',Value:'321'}
+            ]
         ];
     }(RS));
 </script>

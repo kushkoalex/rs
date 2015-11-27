@@ -43,7 +43,8 @@
             },
             {
                 c: 'security-prices-content-container',
-                n: 'securityPricesContentContainer'
+                n: 'securityPricesContentContainer',
+                a: {id: 'securityPricesGrid'}
             }]
     };
 

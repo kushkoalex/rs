@@ -54,3 +54,7 @@ tr.head th{
     border-top: none;
     border-left: none;
 }
+
+.prices-checkbox{
+    padding:5px;
+}

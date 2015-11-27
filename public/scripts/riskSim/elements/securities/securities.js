@@ -98,7 +98,7 @@ RS.securities = function ($parent) {
         var errorOptions = {
             text: error.text || error.description || 'error',
             $wrapper: $popupMessagesWrapper,
-            hideTimeout:error.hideTimeout|| securitiesErrorMessageTimeout
+            hideTimeout: error.hideTimeout || securitiesErrorMessageTimeout
         };
         notifications.showError(errorOptions);
     };
@@ -107,21 +107,21 @@ RS.securities = function ($parent) {
         var announcementOptions = {
             text: announcement.text,
             $wrapper: $popupMessagesWrapper,
-            hideTimeout:announcement.hideTimeout|| securitiesErrorMessageTimeout
+            hideTimeout: announcement.hideTimeout || securitiesErrorMessageTimeout
         };
         notifications.showAnnouncement(announcementOptions);
     };
 
 
-    var getCurrentColumn = function(columns, value){
-        for(var i=0;i<columns.length;i++){
-            if(columns[i].ColumnName===value){
+    var getCurrentColumn = function (columns, value) {
+        for (var i = 0; i < columns.length; i++) {
+            if (columns[i].ColumnName === value) {
                 return columns[i];
             }
         }
     };
 
-    var  compare = function(a,b) {
+    var compare = function (a, b) {
         if (a.displayOrder < b.displayOrder)
             return -1;
         if (a.displayOrder > b.displayOrder)
@@ -129,31 +129,33 @@ RS.securities = function ($parent) {
         return 0;
     };
 
-    var getColumns = function (columns, columnsSettings) {
+    var getColumns = function (columns, columnsSettings, excludeField) {
         var i = 0,
             result = [],
             item,
             field;
 
         for (var column in columns) {
-            item = {
-                id: i,
-                name: column,
-                field: column
-            };
+            if (column != excludeField) {
+                item = {
+                    id: i,
+                    name: column,
+                    field: column
+                };
 
-            field = getCurrentColumn(columnsSettings,column);
+                field = getCurrentColumn(columnsSettings, column);
 
-            if(field){
-                item.width = field.MinWidth;
-                item.displayOrder = field.DisplayOrder;
+                if (field) {
+                    item.width = field.MinWidth;
+                    item.displayOrder = field.DisplayOrder;
+                }
+                else {
+                    item.displayOrder = 0;
+                }
+
+                result.push(item);
+                i++;
             }
-            else{
-                item.displayOrder = 0;
-            }
-
-            result.push(item);
-            i++;
         }
 
         result.sort(compare);
@@ -198,7 +200,7 @@ RS.securities = function ($parent) {
                 }
                 else {
                     gt.addClass($accMethod, 'error');
-                    showErrorMessage({text:'Please select the Accounting Method',hideTimeout: 1000})
+                    showErrorMessage({text: 'Please select the Accounting Method', hideTimeout: 1000})
                 }
             };
 
@@ -233,7 +235,6 @@ RS.securities = function ($parent) {
             $securityInfoContainer.appendChild($fragment);
         }
     };
-
 
 
     var loadPositions = function () {
@@ -305,7 +306,7 @@ RS.securities = function ($parent) {
 
                 if (response.errorCode === 0) {
                     var data = response.securityPositions;
-                    var positionColumns =  response.securityPositionColumns;
+                    var positionColumns = response.securityPositionColumns;
 
                     var positions = [],
                         columns = [];
@@ -324,7 +325,7 @@ RS.securities = function ($parent) {
                     //rs.slickGrid("#securityPositionsGrid", columns, data);
                     rs.slickGrid("#securityPositionsGrid", columns, positions);
                 } else {
-                    showErrorMessage({ text: response.errorText || loadingPositionsErrorText })
+                    showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }
 
 
@@ -370,7 +371,7 @@ RS.securities = function ($parent) {
 
                 if (response.errorCode === 0) {
                     var data = response.trades;
-                    var tradeColumns =  response.tradeColumns;
+                    var tradeColumns = response.tradeColumns;
 
                     var trades = [],
                         columns = [];
@@ -391,17 +392,6 @@ RS.securities = function ($parent) {
                 } else {
                     showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }
-
-
-
-
-                //if (response.errorCode === 0) {
-                //    var data = response.trades,
-                //        columns = response.tradeColumns;
-                //    rs.slickGrid("#securityTradesGrid", columns, data);
-                //} else {
-                //    showErrorMessage({text: response.errorText || loadingPositionsErrorText})
-                //}
             };
 
             var loadTradesError = function (error) {
@@ -458,14 +448,13 @@ RS.securities = function ($parent) {
 
 
             var sbmBtnSearchClick = function () {
-                //disableSearchSbmBtn(this);
                 btnSearchSubmit.loading();
-
                 if (settings.env === 'dev') {
                     loadPricesSuccess(
                         {
                             errorCode: 0,
-                            prices: settings.dataModels.securityPrices
+                            prices: settings.dataModels.securityPrices,
+                            priceColumns: settings.dataModels.priceColumns
                         }
                     );
                 }
@@ -491,7 +480,15 @@ RS.securities = function ($parent) {
                     checkboxes = gt.$c('riskSimPriceItemCheckbox');
                 for (var i = 0; i < checkboxes.length; i++) {
                     if (checkboxes[i].checked) {
-                        result.push(checkboxes[i].getAttribute("name"));
+                        result.push(
+                            {
+                                SecId:checkboxes[i].getAttribute("data-value-SecId"),
+                                PortfolioId:checkboxes[i].getAttribute("data-value-PortfolioId"),
+                                VpmPriceDate:checkboxes[i].getAttribute("data-value-VpmPriceDate"),
+                                EffectivePrice:checkboxes[i].getAttribute("data-value-EffectivePrice"),
+                                RsPriceDate:checkboxes[i].getAttribute("data-value-RsPriceDate")
+                            }
+                        );
                     }
                 }
                 return result;
@@ -504,19 +501,21 @@ RS.securities = function ($parent) {
 
                     btnUpdateSubmit.loading();
 
-                    gt.request(
-                        {
-                            method: 'POST',
-                            postData: {
-                                secId: selectedSecurityId,
-                                rsPriceDate: $rsPriceDate.value,
-                                vpmPriceDate: $vpmPriceDate.value,
-                                selectedPrices: selectedPrices.join('###')
-                            },
-                            url: settings.controlsDescriptors.securities.updatePricesUrl,
-                            onSuccess: updatePricesSuccess,
-                            onError: updatePricesError
-                        });
+                    $.ajax({
+                        url: settings.controlsDescriptors.securities.updatePricesUrl,
+                        type: 'POST',
+                        data: JSON.stringify(
+                                    {
+                                        secId: selectedSecurityId,
+                                        rsPriceDate: $rsPriceDate.value,
+                                        vpmPriceDate: $vpmPriceDate.value,
+                                        selectedPrices: selectedPrices
+                                    }
+                        ),
+                        contentType: 'application/json',
+                        success: updatePricesSuccess,
+                        error: updatePricesError
+                    });
                 }
                 else {
                     showErrorMessage({text: 'Please select prices to update'})
@@ -539,114 +538,68 @@ RS.securities = function ($parent) {
                 btnUpdateSubmit.enable();
             };
 
-
             var loadPricesSuccess = function (response) {
+                var valueFormatter = function (row, cell, value, columnDef, dataContext) {
+                    return '<div class="prices-checkbox"><input class="riskSimPriceItemCheckbox" type="checkbox" ' +
+                        'data-value-SecId="' + value.SecId + '" ' +
+                        'data-value-PortfolioId="' + value.PortfolioId + '" ' +
+                        'data-value-VpmPriceDate="' + value.VpmPriceDate + '" ' +
+                        'data-value-EffectivePrice="' + value.EffectivePrice + '" ' +
+                        'data-value-RsPriceDate="' + value.RsPriceDate + '"></div>';
+                };
 
                 if (response.errorCode === 0) {
-
-                    //var prices = settings.dataModels.securityPrices,
-                    var prices = response.prices,
-                        i,
-                        j,
-                        $fragment = global.document.createDocumentFragment(),
-                        $fragmentPrice = global.document.createDocumentFragment(),
-                        $securityPricesTableContent,
-                        $cbSelectAll,
-                        build,
-                        $row,
-                        items = [],
-                        buildItem;
-
-                    $securityPricesContentContainer.innerHTML = '';
-
-
-                    var checkItem = function (cb) {
-                        var row = cb.parentNode.parentNode;
-                        if (cb.checked) {
-                            gt.addClass(row, 'checked')
-                        } else {
-                            gt.removeClass(row, 'checked')
-                        }
-                    };
-
-                    if (prices.length > 0) {
-                        build = tp('securityPricesTable', $fragment);
-                        $securityPricesTableContent = build.securityPricesTableContent;
-                        $cbSelectAll = build.cbSelectAll;
-
-                        for (i = 0; i < prices.length; i++) {
-                            if (i % 2 == 0) {
-                                prices[i].odd = true;
+                    var data = response.prices,
+                        priceColumns = response.priceColumns,
+                        prices = [],
+                        columns = [];
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var price = {};
+                            for (var obj in data[i]) {
+                                price[data[i][obj].Key] = data[i][obj].Value;
                             }
-                            buildItem = tp('securityPricesTableItem', prices[i], $fragmentPrice);
-                            $securityPricesTableContent.appendChild($fragmentPrice);
-                            $row = buildItem.row;
-                            items.push(buildItem.cb);
-                            gt.addEvent(buildItem.cb, eventOnPointerEnd, function () {
-                                checkItem(this)
-                            });
+                            price['priceCheckbox'] = {
+                                SecId: price['secid'],
+                                PortfolioId: price['PortfolioID'],
+                                VpmPriceDate: price['VPMPriceDate'],
+                                EffectivePrice: price['EffectivePrice'],
+                                RsPriceDate: price['RSPriceDate']
+                            };
+                            prices.push(price)
                         }
+                        columns = getColumns(prices[0], priceColumns, 'priceCheckbox');
 
-                        gt.addEvent($cbSelectAll, eventOnPointerEnd, function () {
-                            for (j = 0; j < items.length; j++) {
-                                items[j].checked = !!$cbSelectAll.checked;
-                                checkItem(items[j]);
-                            }
+                        columns.unshift({
+                            id: -1,
+                            name: '',
+                            width: 10,
+                            field: 'priceCheckbox',
+                            formatter: valueFormatter
                         });
-
-                        $securityPricesContentContainer.appendChild($fragment);
-                        btnUpdateSubmit.enable();
-                        //gt.removeClass($btnUpdateSubmit, 'disabled');
-                        //gt.addEvent($btnUpdateSubmit, eventOnPointerEnd, sbmBtnUpdateClick);
                     }
+
+
+                    rs.slickGrid("#securityPricesGrid", columns, prices);
                 } else {
                     showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }
-                //enableSearchSbmBtn();
+
                 btnSearchSubmit.enable();
             };
 
             var loadPricesError = function (error) {
                 showErrorMessage({text: error || loadingPricesErrorText});
-                //enableSearchSbmBtn();
                 btnSearchSubmit.enable();
             };
 
-            //var disableSearchSbmBtn = function (ctx) {
-            //    gt.addClass(ctx.parentNode, 'disabled');
-            //    gt.addClass(ctx.parentNode, 'loading');
-            //    gt.removeEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
-            //};
-            //
-            //var enableSearchSbmBtn = function () {
-            //    gt.removeClass($btnSearchSubmit.parentNode, 'disabled');
-            //    gt.removeClass($btnSearchSubmit.parentNode, 'loading');
-            //    gt.addEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
-            //};
-            //
-            //var disableUpdateSbmBtn = function (ctx) {
-            //    gt.addClass(ctx.parentNode, 'disabled');
-            //    gt.addClass(ctx.parentNode, 'loading');
-            //    gt.removeEvent($btnUpdateSubmit, eventOnPointerEnd, sbmBtnUpdateClick);
-            //};
-            //
-            //var enableUpdateSbmBtn = function () {
-            //    gt.removeClass($btnUpdateSubmit.parentNode, 'disabled');
-            //    gt.removeClass($btnUpdateSubmit.parentNode, 'loading');
-            //    gt.addEvent($btnUpdateSubmit, eventOnPointerEnd, sbmBtnUpdateClick);
-            //};
-
-            //gt.addEvent($btnSearchSubmit, eventOnPointerEnd, sbmBtnSearchClick);
             var btnSearchSubmit = gt.button($btnSearchSubmit, {submitCallBack: sbmBtnSearchClick});
             var btnUpdateSubmit = gt.button($btnUpdateSubmit, {
-                submitCallBack: sbmBtnUpdateClick,
-                isDisabled: true
+                submitCallBack: sbmBtnUpdateClick//,
+                //isDisabled: true
             });
 
-            //gt.addClass($btnUpdateSubmit, 'disabled');
-
             sbmBtnSearchClick.call();
-
         }
         else {
             tp('securityInfoWrapperEmpty', {text: securityInfoWrapperEmptyText}, $fragment);
