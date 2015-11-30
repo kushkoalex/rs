@@ -8,6 +8,7 @@ RS.opsDashboard = function ($parent) {
         notifications = rs.notifications,
         securitiesErrorMessageTimeout = rs.settings.controlsDescriptors.securities.errorMessageTimeout || 3000,
         $popupMessagesWrapper = build.messagesWrapper,
+        loadingVpmFxRatesErrorText = 'Error loading security trades',
         $btnSubmit = build.btnSubmit,
         u;
 
@@ -48,11 +49,6 @@ RS.opsDashboard = function ($parent) {
     var sbmBtnClick = function () {
 
         btnSubmit.loading();
-        //var data = {
-        //    portfolios: portfolios.getValues(),
-        //    securityIds: securityIds.getValues(),
-        //    runDate: $runDate.value
-        //};
 
         $.ajax({
             url: settings.controlsDescriptors.securities.opsDashboardSendEmainUrl,
@@ -65,5 +61,55 @@ RS.opsDashboard = function ($parent) {
     };
 
     var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick});
+
+
+    var loadVpmFxRatesSuccess = function(response){
+        if (response.errorCode === 0) {
+            var data = response.rates;
+            var rateColumns = response.rateColumns;
+
+            var rates = [],
+                columns = [];
+
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    var rate = {};
+                    for (var obj in data[i]) {
+                        rate[data[i][obj].Key] = data[i][obj].Value;
+                    }
+                    rates.push(rate)
+                }
+                columns = gt.getSlickGridColumns(rates[0], rateColumns);
+            }
+
+            //rs.slickGrid("#securityPositionsGrid", columns, data);
+            rs.slickGrid("#vpmFxRatesGrid", columns, rates);
+        } else {
+            showErrorMessage({text: response.errorText || loadingVpmFxRatesErrorText})
+        }
+    };
+
+    var loadVpmFxRatesError = function (error) {
+        showErrorMessage({text: error || loadingVpmFxRatesErrorText});
+    };
+
+    if (settings.env === 'dev') {
+        loadVpmFxRatesSuccess(
+            {
+                errorCode: 0,
+                rateColumns: settings.dataModels.vpmFxRatesColumns,
+                rates: settings.dataModels.vpmFxRates
+            }
+        );
+    }
+    else {
+        $.ajax({
+            url: settings.controlsDescriptors.securities.getVpmFxPricesUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            success: loadVpmFxRatesSuccess,
+            error: loadVpmFxRatesError
+        });
+    }
 
 };

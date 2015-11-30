@@ -3,14 +3,21 @@
         gt = rs.global.GT,
         u;
 
-    tmpls.opsDashboard = function(){
-        return{
-            c:'ops-dashboard-container',C:[{
-                c: 'message-wrapper', n: 'messagesWrapper'
-            },{
-                c: 'form-control',
-                C: tmpls.loadingButton({text: 'SignOff FX Rates', n: 'btnSubmit'})
-            }]
+    tmpls.opsDashboard = function () {
+        return {
+            c: 'ops-dashboard-container', C: [
+                {
+                    c: 'message-wrapper', n: 'messagesWrapper'
+                },
+                {
+                    c: 'form-control',
+                    C: tmpls.loadingButton({text: 'SignOff FX Rates', n: 'btnSubmit'})
+                },
+                {
+                    c:'vpm-fx-rates-content-container',
+                    a: {id: 'vpmFxRatesGrid'}
+                }
+            ]
         };
     }
 }(RS));

@@ -20,6 +20,7 @@
         <script type="text/javascript" src="../scripts/gt/helpers/each.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/gt/helpers/getJSON.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/gt/helpers/initModules.js?v=0.0.1"></script>
+        <script type="text/javascript" src="../scripts/gt/helpers/slickGridHelper.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/gt/helpers/text.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/libs/cnCt/cnCt.js?v=0.0.1"></script>
         <script type="text/javascript" src="../scripts/riskSim/RS.js?v=0.0.1"></script>
@@ -77,6 +78,7 @@
         <link rel="stylesheet" type="text/css" href="../styles/pages/analytics-updater/trades-update.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/dashboard/dashboard.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/ops-dashboard/ops-dashboard.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/ops-dashboard/vpm-fx-rates.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/securities-indic.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/securities-menu.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/securities.css?v=0.0.1" media="screen"/>
@@ -132,9 +134,11 @@
                 updateSecurityUrl:'',
                 reportGenRunUrl:'',
                 opsDashboardSendEmainUrl:'',
+                getVpmFxPricesUrl:'',
                 getReportGenStatusUrl:'/getstatus',
                 prevBusinessDay:'09/01/2015',
-                errorMessageTimeout:3000
+                errorMessageTimeout:3000,
+
             };
 
             controlsDescriptors.userSettings = {
@@ -4552,6 +4556,42 @@
 
     <script type="text/javascript">
         (function (rs) {
+
+            rs.settings.dataModels.vpmFxRatesColumns = [
+                {
+                    ColumnName:'EvId',
+                    DataFormat:'',
+                    DisplayOrder:1,
+                    MinWidth:150
+                },
+                {
+                    ColumnName:'Portfolio',
+                    DataFormat:'',
+                    DisplayOrder:2,
+                    MinWidth:150
+                }
+            ];
+
+            rs.settings.dataModels.vpmFxRates = [
+                [
+                    {Key:'cucude',Value:'USD'},
+                    {Key:'PrevBusinessDay',Value:'1.000000000000'},
+                    {Key:'CurBusinessDay',Value:'1.000000000000'},
+                    {Key:'Diff',Value:'0.0000000000000000000000'}
+                ],
+                [
+                    {Key:'cucude',Value:'EUR'},
+                    {Key:'PrevBusinessDay',Value:'1.061550000000'},
+                    {Key:'CurBusinessDay',Value:'1.061550000000'},
+                    {Key:'Diff',Value:'0.0000000000000000000000'}
+                ]
+            ];
+        }(RS));
+    </script>
+
+
+    <script type="text/javascript">
+        (function (rs) {
             rs.settings.dataModels.strategies = [
                 {text:'All0',value:'All0'},
                 {text:'All1',value:'All1'},
@@ -4683,8 +4723,17 @@
         </ul>
     </div>
     <div class="content-layout">
-        <div class="content-layout-header">
-
+        <div class="content-layout-header analytics-updater">
+            <div class="trades-update-menu">
+                <ul>
+                    <li class="menu-item active">
+                        <a href="#">VPM FX Rates</a>
+                        <div class="arrow">
+                            <div class="inner"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <div class="content-layout-content-wrapper" id="opsDashboard">
