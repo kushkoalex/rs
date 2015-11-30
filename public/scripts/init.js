@@ -5,7 +5,9 @@ GT.ready(function(gt,global){
         $tradesUpdate = gt.$('tradesUpdate'),
         $pnlUpdate = gt.$('pnlUpdate'),
         $opsDashboard = gt.$('opsDashboard'),
-        $userSettings = gt.$('userSettings');
+        $userSettings = gt.$('userSettings'),
+        $supportDashboard = gt.$('supportDashboard');
+
 
     global.cnCt.bindTemplates(rs.tmpls);
 
@@ -28,5 +30,8 @@ GT.ready(function(gt,global){
     }
     if ($userSettings !== null) {
         rs.userSettings($userSettings);
+    }
+    if ($supportDashboard !== null) {
+        rs.supportDashboard($supportDashboard);
     }
 });
