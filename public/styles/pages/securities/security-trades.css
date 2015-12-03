@@ -1,9 +1,42 @@
-.security-trades-content-container{
+.security-trades-content-wrapper{
     position: absolute;
     top: 0;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+
+.security-trades-tools-panel{
+    position: absolute;
+    height: 40px;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.security-trades-tools-panel .controls-container{
+    /*padding:0 10px;*/
+}
+
+
+
+.security-trades-content{
+    position: absolute;
     background-color: #ffffff;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     overflow: auto;
+}
+
+.has-tools-panel .security-trades-content{
+    top: 50px;
+}
+
+.updating-trades-sbm-button
+{
+    /*margin-left: 20px;*/
 }

@@ -6,7 +6,7 @@
     tmpls.securityPrices = function (data) {
         return [
             {
-                c: 'security-position-tools-panel', C: {
+                c: 'security-prices-tools-panel', C: {
                 c: 'controls-container', C: {
                     c: 'input-group inline', C: [
                         {

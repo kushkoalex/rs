@@ -1,5 +1,5 @@
 (function (gt, rs) {
-    rs.slickGrid = function(elId,columns,data){
+    rs.slickGrid = function(elId,columns,data, exclusion){
         var options = {
                 enableCellNavigation: true,
                 showHeaderRow: true,
@@ -41,7 +41,7 @@
 
         grid.onHeaderRowCellRendered.subscribe(function (e, args) {
             $(args.node).empty();
-            if(args.column.field !== "priceCheckbox") {
+            if(args.column.field !== exclusion) {
                 $("<input type='text'>")
                     .data("columnId", args.column.id)
                     .val(columnFilters[args.column.id])

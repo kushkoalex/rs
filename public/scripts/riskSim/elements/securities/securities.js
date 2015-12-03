@@ -112,57 +112,6 @@ RS.securities = function ($parent) {
         notifications.showAnnouncement(announcementOptions);
     };
 
-
-    //var getCurrentColumn = function (columns, value) {
-    //    for (var i = 0; i < columns.length; i++) {
-    //        if (columns[i].ColumnName === value) {
-    //            return columns[i];
-    //        }
-    //    }
-    //};
-    //
-    //var compare = function (a, b) {
-    //    if (a.displayOrder < b.displayOrder)
-    //        return -1;
-    //    if (a.displayOrder > b.displayOrder)
-    //        return 1;
-    //    return 0;
-    //};
-    //
-    //var getColumns = function (columns, columnsSettings, excludeField) {
-    //    var i = 0,
-    //        result = [],
-    //        item,
-    //        field;
-    //
-    //    for (var column in columns) {
-    //        if (column != excludeField) {
-    //            item = {
-    //                id: i,
-    //                name: column,
-    //                field: column
-    //            };
-    //
-    //            field = getCurrentColumn(columnsSettings, column);
-    //
-    //            if (field) {
-    //                item.width = field.MinWidth;
-    //                item.displayOrder = field.DisplayOrder;
-    //            }
-    //            else {
-    //                item.displayOrder = 0;
-    //            }
-    //
-    //            result.push(item);
-    //            i++;
-    //        }
-    //    }
-    //
-    //    result.sort(compare);
-    //
-    //    return result;
-    //};
-
     var loadDetails = function () {
 
         var loadIndicSuccess = function (response) {
@@ -235,7 +184,6 @@ RS.securities = function ($parent) {
             $securityInfoContainer.appendChild($fragment);
         }
     };
-
 
     var loadPositions = function () {
 
@@ -359,36 +307,64 @@ RS.securities = function ($parent) {
 
     var loadTrades = function () {
         var $fragment = global.document.createDocumentFragment(),
+            $strategy,
             build;
         $securityInfoContainer.innerHTML = '';
         if (selectedSecurityId !== null) {
-            build = tp('securityTrades', $fragment);
+
+            build = tp('securityTrades', {isRSSupportADGroupMember: settings.isRSSupportADGroupMember}, $fragment);
+            $strategy = build.strategy;
             $securityInfoContainer.appendChild($fragment);
 
             $securityTradesContentContainer = build.securityTradesContentContainer;
 
+            var updateStrategySuccess = function (response) {
+                if (response.errorCode == 0) {
+                    showAnnouncementMessage({text: response.message});
+                } else {
+                    showErrorMessage({text: response.errorText});
+                }
+                btnUpdateSubmit.enable();
+            };
+
+            var updateStrategyError = function (error) {
+                showErrorMessage({text: error || updatingPricesErrorText});
+                btnUpdateSubmit.enable();
+            };
+
             var loadTradesSuccess = function (response) {
+                var valueFormatter = function (row, cell, value, columnDef, dataContext) {
+                    return '<div class="trades-checkbox"><input class="riskSimTradeItemCheckbox" type="checkbox" data-value-TradeId="' + value.TradeId + '"></div>';
+                };
 
                 if (response.errorCode === 0) {
-                    var data = response.trades;
-                    var tradeColumns = response.tradeColumns;
-
-                    var trades = [],
+                    var data = response.trades,
+                        tradeColumns = response.tradeColumns,
+                        trades = [],
                         columns = [];
-
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
                             var trade = {};
                             for (var obj in data[i]) {
                                 trade[data[i][obj].Key] = data[i][obj].Value;
                             }
+                            trade['tradeCheckbox'] = {
+                                TradeId: trade['EvID']
+                            };
                             trades.push(trade)
                         }
-                        columns = gt.getSlickGridColumns(trades[0], tradeColumns);
+                        //columns = gt.getSlickGridColumns(trades[0], tradeColumns);
+                        columns = gt.getSlickGridColumns(trades[0], tradeColumns, 'tradeCheckbox');
+                        columns.unshift({
+                            id: -1,
+                            name: '',
+                            width: 10,
+                            field: 'tradeCheckbox',
+                            formatter: valueFormatter
+                        });
                     }
 
-                    //rs.slickGrid("#securityPositionsGrid", columns, data);
-                    rs.slickGrid("#securityTradesGrid", columns, trades);
+                    rs.slickGrid("#securityTradesGrid", columns, trades, 'tradeCheckbox');
                 } else {
                     showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }
@@ -417,6 +393,60 @@ RS.securities = function ($parent) {
                         onSuccess: loadTradesSuccess,
                         onError: loadTradesError
                     });
+            }
+
+            var collectSelectedTrades = function () {
+                var result = [],
+                    checkboxes = gt.$c('riskSimTradeItemCheckbox');
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked) {
+                        result.push(
+                            {
+                                TradeId: checkboxes[i].getAttribute("data-value-TradeId")
+                            }
+                        );
+                    }
+                }
+                return result;
+            };
+
+            var sbmBtnUpdateClick = function () {
+                var selectedTrades = collectSelectedTrades();
+                if (selectedTrades.length > 0) {
+                    //disableUpdateSbmBtn(this);
+
+                    btnUpdateSubmit.loading();
+
+                    $.ajax({
+                        url: settings.controlsDescriptors.securities.updateStrategyUrl,
+                        type: 'POST',
+                        data: JSON.stringify(
+                            {
+                                selectedTrades: selectedTrades,
+                                strategyId: $strategy.value,
+                                secId: selectedSecurityId
+                            }
+                        ),
+                        contentType: 'application/json',
+                        success: updateStrategySuccess,
+                        error: updateStrategyError
+                    });
+                }
+                else {
+                    showErrorMessage({text: 'Please select trades to update'})
+                }
+            };
+
+
+            if (settings.isRSSupportADGroupMember === true) {
+
+                $btnUpdateSubmit = build.btnUpdateSubmit;
+                var btnUpdateSubmit = gt.button($btnUpdateSubmit, {
+                    submitCallBack: sbmBtnUpdateClick//,
+                    //isDisabled: true
+                });
+
+
             }
 
         } else {
@@ -473,8 +503,6 @@ RS.securities = function ($parent) {
                         });
                 }
             };
-
-
             var collectSelectedPrices = function () {
                 var result = [],
                     checkboxes = gt.$c('riskSimPriceItemCheckbox');
@@ -482,18 +510,17 @@ RS.securities = function ($parent) {
                     if (checkboxes[i].checked) {
                         result.push(
                             {
-                                SecId:checkboxes[i].getAttribute("data-value-SecId"),
-                                PortfolioId:checkboxes[i].getAttribute("data-value-PortfolioId"),
-                                VpmPriceDate:checkboxes[i].getAttribute("data-value-VpmPriceDate"),
-                                EffectivePrice:checkboxes[i].getAttribute("data-value-EffectivePrice"),
-                                RsPriceDate:checkboxes[i].getAttribute("data-value-RsPriceDate")
+                                SecId: checkboxes[i].getAttribute("data-value-SecId"),
+                                PortfolioId: checkboxes[i].getAttribute("data-value-PortfolioId"),
+                                VpmPriceDate: checkboxes[i].getAttribute("data-value-VpmPriceDate"),
+                                EffectivePrice: checkboxes[i].getAttribute("data-value-EffectivePrice"),
+                                RsPriceDate: checkboxes[i].getAttribute("data-value-RsPriceDate")
                             }
                         );
                     }
                 }
                 return result;
             };
-
             var sbmBtnUpdateClick = function () {
                 var selectedPrices = collectSelectedPrices();
                 if (selectedPrices.length > 0) {
@@ -505,12 +532,12 @@ RS.securities = function ($parent) {
                         url: settings.controlsDescriptors.securities.updatePricesUrl,
                         type: 'POST',
                         data: JSON.stringify(
-                                    {
-                                        secId: selectedSecurityId,
-                                        rsPriceDate: $rsPriceDate.value,
-                                        vpmPriceDate: $vpmPriceDate.value,
-                                        selectedPrices: selectedPrices
-                                    }
+                            {
+                                secId: selectedSecurityId,
+                                rsPriceDate: $rsPriceDate.value,
+                                vpmPriceDate: $vpmPriceDate.value,
+                                selectedPrices: selectedPrices
+                            }
                         ),
                         contentType: 'application/json',
                         success: updatePricesSuccess,
@@ -580,7 +607,7 @@ RS.securities = function ($parent) {
                     }
 
 
-                    rs.slickGrid("#securityPricesGrid", columns, prices);
+                    rs.slickGrid("#securityPricesGrid", columns, prices, 'priceCheckbox');
                 } else {
                     showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }

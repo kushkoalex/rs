@@ -6,7 +6,7 @@
     tmpls.securityPositions = function (data) {
         return [
             {
-                c: 'security-prices-tools-panel', C: {
+                c: 'security-positions-tools-panel', C: {
                 c: 'controls-container', C: {
                     c: 'input-group inline', C: [
                         {

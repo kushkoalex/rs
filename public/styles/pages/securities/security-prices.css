@@ -7,12 +7,8 @@
 }
 
 .security-prices-tools-panel .controls-container{
-
     padding:0 10px;
-
 }
-
-
 
 .security-prices-content-container{
     position: absolute;
@@ -29,32 +25,32 @@
     margin-left: 20px;
 }
 
-.security-prices-content-container table{
-    border-collapse: collapse;
-}
+/*.security-prices-content-container table{*/
+    /*border-collapse: collapse;*/
+/*}*/
 
-.security-prices-content-container table input[type="checkbox"]{
-    vertical-align: middle;
-}
+/*.security-prices-content-container table input[type="checkbox"]{*/
+    /*vertical-align: middle;*/
+/*}*/
 
 
-tr.checked{
-    background-color: #b0c4de !important;
-}
+/*tr.checked{*/
+    /*background-color: #b0c4de !important;*/
+/*}*/
 
-tr.head{
-    background-color: #66a2ad;
-    color: #ffffff;
-}
+/*tr.head{*/
+    /*background-color: #66a2ad;*/
+    /*color: #ffffff;*/
+/*}*/
 
-tr.head th{
-    padding: 2px;
-    height: 24px;
-    border: 1px solid #bbb;
-    border-top: none;
-    border-left: none;
-}
+/*tr.head th{*/
+    /*padding: 2px;*/
+    /*height: 24px;*/
+    /*border: 1px solid #bbb;*/
+    /*border-top: none;*/
+    /*border-left: none;*/
+/*}*/
 
-.prices-checkbox{
-    padding:5px;
-}
+/*.prices-checkbox{*/
+    /*padding:5px;*/
+/*}*/
