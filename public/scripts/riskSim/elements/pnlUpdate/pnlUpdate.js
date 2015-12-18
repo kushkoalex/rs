@@ -9,6 +9,7 @@ RS.pnlUpdate = function ($parent) {
         securitiesErrorMessageTimeout = rs.settings.controlsDescriptors.securities.errorMessageTimeout || 3000,
         $popupMessagesWrapper = build.messagesWrapper,
         $btnSubmit = build.btnSubmit,
+        $btnRunPnlRec = build.btnRunPnlRec,
         $runDate = build.runDate,
         $portfolios = build.portfolios,
         $securityIds = build.securityIds,
@@ -24,6 +25,15 @@ RS.pnlUpdate = function ($parent) {
             hideTimeout: error.hideTimeout || securitiesErrorMessageTimeout
         };
         notifications.showError(errorOptions);
+    };
+
+    var showAnnouncementMessage = function (announcement) {
+        var announcementOptions = {
+            text: announcement.text,
+            $wrapper: $popupMessagesWrapper,
+            hideTimeout: announcement.hideTimeout || securitiesErrorMessageTimeout
+        };
+        notifications.showAnnouncement(announcementOptions);
     };
 
     var rgRunOnSuccess = function (response) {
@@ -53,6 +63,29 @@ RS.pnlUpdate = function ($parent) {
             contentType: 'application/json',
             success: rgRunOnSuccess,
             error: rgRunOnError
+        });
+    };
+
+    var runPnlRecSuccess = function (response) {
+        if (response.errorCode === 0) {
+            showAnnouncementMessage({text: response.message});
+        }
+        else {
+            showErrorMessage({text: response.errorText});
+        }
+    };
+
+    var runPnlRecError = function (response) {
+        console.log(response);
+    };
+
+    var btnRunPnlRecClick = function () {
+        $.ajax({
+            url: settings.controlsDescriptors.securities.runPnlRecUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            success: runPnlRecSuccess,
+            error: runPnlRecError
         });
     };
 
@@ -136,6 +169,7 @@ RS.pnlUpdate = function ($parent) {
     var portfolios = gt.multipleInput($portfolios);
     var securityIds = gt.multipleInput($securityIds);
     var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick});
+    var btnRunPnlRec = gt.button($btnRunPnlRec, {submitCallBack: btnRunPnlRecClick});
 
     //getStatus();
     refreshIntervalId = setInterval(getStatus, 3000);

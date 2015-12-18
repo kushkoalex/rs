@@ -33,6 +33,10 @@
                     {
                         c: 'form-control',
                         C: tmpls.loadingButton({text: 'Run', n: 'btnSubmit'})
+                    },
+                    {
+                        c: 'form-control',
+                        C: tmpls.button({text: 'Run PNL Rec', n: 'btnRunPnlRec'})
                     }
                 ]
                 }
