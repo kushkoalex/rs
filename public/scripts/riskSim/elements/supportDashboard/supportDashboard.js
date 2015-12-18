@@ -4,11 +4,141 @@ RS.supportDashboard = function ($parent) {
         gt = global.GT,
         tp = global.cnCt.tp,
         settings = rs.settings,
-        eventOnPointerEnd = gt.deviceInfo.eventOnPointerEnd,
+    //eventOnPointerEnd = gt.deviceInfo.eventOnPointerEnd,
+        errorMessageTimeout = rs.settings.controlsDescriptors.errorMessageTimeout || 3000,
         notifications = rs.notifications,
-        build = tp('supportDashboard', $parent),
+        commands = rs.settings.dataModels.indicUpdateToolCommands,
+        parameterValues = settings.dataModels.indicUpdateToolCommandsParamValues,
+        build = tp('supportDashboard', commands, $parent),
+        $commandParams = build.commandParams,
+        $command = build.sCommand,
+        $commandDescription = build.commandDescription,
+        $popupMessagesWrapper = build.messagesWrapper,
+        executeCommandErrorText = 'Error executing command',
+        $btnSubmit = build.btnSubmit,
+        $paramValues = [],
+        paramBuild,
+        i,
         u;
 
+    var showErrorMessage = function (error) {
+        var errorOptions = {
+            text: error.text || error.description || 'error',
+            $wrapper: $popupMessagesWrapper,
+            hideTimeout: error.hideTimeout || errorMessageTimeout
+        };
+        notifications.showError(errorOptions);
+    };
 
+    var showAnnouncementMessage = function (announcement) {
+        var announcementOptions = {
+            text: announcement.text,
+            $wrapper: $popupMessagesWrapper,
+            hideTimeout: announcement.hideTimeout || errorMessageTimeout
+        };
+        notifications.showAnnouncement(announcementOptions);
+    };
+
+    var getItemById = function (items, id) {
+        var i;
+        for (i = 0; i < items.length; i++) {
+            if (items[i].id == id) {
+                return items[i];
+            }
+        }
+        return null;
+    };
+
+    var getParameterValues = function (values, paramId) {
+        var result = [];
+        gt.each(values, function (item) {
+            if (item.paramId === paramId) {
+                result.push(item);
+            }
+        });
+        return result;
+    };
+
+    var onCommandChange = function () {
+        var $fragment = global.document.createDocumentFragment(),
+            id = this.value,
+            paramValues,
+            i;
+
+        $paramValues=[];
+
+        var command = getItemById(commands, id);
+
+        if (command !== null) {
+            $commandDescription.innerText = command.description;
+
+            $commandParams.innerHTML = '';
+            gt.each(command.params, function (item) {
+                paramValues = getParameterValues(parameterValues, item.id);
+                paramBuild = tp('commandParameter', {param: item, values: paramValues}, $fragment);
+                $paramValues.push({id:item.id, name:item.name, $inp:paramBuild.sCommandParameter});
+            });
+            $commandParams.appendChild($fragment);
+        }
+    };
+
+    gt.addEvent($command, 'change', onCommandChange);
+
+    if ($command.length > 0) {
+        onCommandChange.apply($command[0]);
+    }
+
+    var executeCommandSuccess = function (response) {
+        if (response.errorCode === 0) {
+            showAnnouncementMessage({text: response.message});
+        } else {
+            showErrorMessage({text: response.errorText || executeCommandErrorText});
+        }
+
+        btnSubmit.enable();
+    };
+
+    var executeCommandError = function (error) {
+        showErrorMessage({text: error || executeCommandErrorText});
+        btnSubmit.enable();
+    };
+
+    var collectFormData = function () {
+        var params = [];
+        gt.each($paramValues,function(item){
+            params.push({id:item.id,name:item.name,value:item.$inp.value});
+        });
+
+        return{
+            command:$command.value,
+            params : params
+        }
+    };
+
+    var sbmBtnClick = function () {
+        console.log(collectFormData());
+
+        btnSubmit.loading();
+        if (settings.env === 'dev') {
+            setTimeout(function () {
+                executeCommandSuccess(
+                    {
+                        errorCode: 0,
+                        message: 'success'
+                    }
+                );
+            }, 500);
+        } else {
+            gt.request({
+                method: 'POST',
+                postData: collectFormData, //{secId: selectedSecurityId, accountingMethod: $accMethod.value},
+                url: settings.controlsDescriptors.supportDashboard.indicUpdateToolExecuteCommandUrl,
+                onSuccess: executeCommandSuccess,
+                onError: executeCommandError
+            });
+        }
+    };
+
+    var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick});
 
 };

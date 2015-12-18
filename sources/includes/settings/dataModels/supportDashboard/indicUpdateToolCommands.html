@@ -2,12 +2,14 @@
     (function (rs) {
         rs.settings.dataModels.indicUpdateToolCommands = [
             {
+                id:1,
                 type: 'CMD',
-                name: 'New Security',
+                title: 'New Security',
                 description: 'Create a new security using Datacollector',
                 commandText: 'C:\\bin\\DataCollector.exe -sectype @SecType -getindic @Ric',
                 params: [
                     {
+                        id:1,
                         name: '@SecType',
                         description: 'Security Type',
                         position: 1,
@@ -15,6 +17,7 @@
                         values: ['Corp', 'Govt', 'Equity', 'Fut', 'BFut']
                     },
                     {
+                        id:2,
                         name: '@Ric',
                         description: 'Identifier',
                         position: 2,
@@ -24,8 +27,9 @@
                 ]
             },
             {
+                id:2,
                 type: 'CMD',
-                name: 'Update Price History',
+                title: 'Update Price History',
                 description: 'Updates the price History using Priceloader',
                 commandText: 'C:\\bin\\PriceLoader.exe -ric @Ric -date @EndDate -gethist @StartDate',
                 params: [

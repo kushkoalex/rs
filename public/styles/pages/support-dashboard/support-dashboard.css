@@ -1,0 +1,21 @@
+.support-dashboard-container{
+    margin: 20px;
+}
+
+.support-dashboard-container .form-control{
+
+}
+
+.support-dashboard-container .command-parameters{
+    margin-top: 20px;
+
+}
+
+.support-dashboard-container .command-parameters input{
+    width: 250px;
+}
+
+.support-dashboard-container .command .input-wrapper.hasTitle .title,
+.support-dashboard-container .command-parameters .input-wrapper.hasTitle .title{
+    min-width: 120px;
+}

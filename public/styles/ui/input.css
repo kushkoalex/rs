@@ -36,6 +36,7 @@
     font-size: 14px;
     padding: 6px 6px;
     color: #666;
+    text-align: right;
 }
 
 .input-wrapper.hasTitle input[type="text"],

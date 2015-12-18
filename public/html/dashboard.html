@@ -87,6 +87,7 @@
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/security-positions.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/security-prices.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/securities/security-trades.css?v=0.0.1" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="../styles/pages/support-dashboard/support-dashboard.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/user-settings/grid-settings-widget.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../styles/pages/user-settings/user-settings.css?v=0.0.1" media="screen"/>
         <link rel="stylesheet" type="text/css" href="../vendor/styles/jquery-ui-1.10.3.min.css?v=0.0.1" media="screen"/>
@@ -153,6 +154,10 @@
 
             controlsDescriptors.siteSettings={
                 datePickerCalendarImageUrl:'../images/calendar.png'
+            };
+
+            controlsDescriptors.supportDashboard = {
+                indicUpdateToolExecuteCommandUrl:''
             };
 
             //controlsDescriptors.multipleInputSplitRegex = '/\s?[, ]\s?/';
@@ -4712,6 +4717,105 @@
             ]}
         }(RS));
     </script>
+
+
+
+    <script type="text/javascript">
+        (function (rs) {
+            rs.settings.dataModels.indicUpdateToolCommands = [
+                {
+                    id:1,
+                    type: 'CMD',
+                    title: 'New Security',
+                    description: 'Create a new security using Datacollector',
+                    commandText: 'C:\\bin\\DataCollector.exe -sectype @SecType -getindic @Ric',
+                    params: [
+                        {
+                            id:1,
+                            name: '@SecType',
+                            description: 'Security Type',
+                            position: 1,
+                            defaultValue: null,
+                            values: ['Corp', 'Govt', 'Equity', 'Fut', 'BFut']
+                        },
+                        {
+                            id:2,
+                            name: '@Ric',
+                            description: 'Identifier',
+                            position: 2,
+                            defaultValue: null,
+                            values: []
+                        }
+                    ]
+                },
+                {
+                    id:2,
+                    type: 'CMD',
+                    title: 'Update Price History',
+                    description: 'Updates the price History using Priceloader',
+                    commandText: 'C:\\bin\\PriceLoader.exe -ric @Ric -date @EndDate -gethist @StartDate',
+                    params: [
+                        {
+                            name: '@Ric',
+                            description: 'Identifier',
+                            position: 1,
+                            defaultValue: null,
+                            values: []
+                        },
+                        {
+                            name: '@StartDate',
+                            description: 'Identifier',
+                            position: 2,
+                            defaultValue: 'DateTime.Today.AddYears(-1)',
+                            values: []
+                        },
+                        {
+                            name: '@EndDate',
+                            description: 'Identifier',
+                            position: 3,
+                            defaultValue: 'DateTime.Today',
+                            values: []
+                        }
+                    ]
+                }
+            ];
+        }(RS));
+    </script>
+
+
+    <script type="text/javascript">
+        (function (rs) {
+            rs.settings.dataModels.indicUpdateToolCommandsParamValues = [
+                {
+                    id:1,
+                    paramId: 1,
+                    value: 'Corp'
+                },
+                {
+                    id:2,
+                    paramId: 1,
+                    value: 'Govt'
+                },
+                {
+                    id:3,
+                    paramId: 1,
+                    value: 'Equity'
+                },
+                {
+                    id:4,
+                    paramId: 1,
+                    value: 'Fut'
+                },
+                {
+                    id:5,
+                    paramId: 1,
+                    value: 'BFut'
+                }
+            ];
+        }(RS));
+    </script>
+
+
 
 
 
