@@ -110,14 +110,13 @@ RS.supportDashboard = function ($parent) {
         });
 
         return{
-            command:$command.value,
-            params : params
+            commandId: +$command.value,
+            commandParams : params
         }
     };
 
     var sbmBtnClick = function () {
-        console.log(collectFormData());
-
+        //console.log(collectFormData());
         btnSubmit.loading();
         if (settings.env === 'dev') {
             setTimeout(function () {
@@ -129,13 +128,22 @@ RS.supportDashboard = function ($parent) {
                 );
             }, 500);
         } else {
-            gt.request({
-                method: 'POST',
-                postData: collectFormData, //{secId: selectedSecurityId, accountingMethod: $accMethod.value},
+            $.ajax({
                 url: settings.controlsDescriptors.supportDashboard.indicUpdateToolExecuteCommandUrl,
-                onSuccess: executeCommandSuccess,
-                onError: executeCommandError
+                type: 'POST',
+                data: JSON.stringify(collectFormData()),
+                contentType: 'application/json',
+                success: executeCommandSuccess,
+                error: executeCommandError
             });
+
+            //gt.request({
+            //    method: 'POST',
+            //    postData: collectFormData(), //{secId: selectedSecurityId, accountingMethod: $accMethod.value},
+            //    url: settings.controlsDescriptors.supportDashboard.indicUpdateToolExecuteCommandUrl,
+            //    onSuccess: executeCommandSuccess,
+            //    onError: executeCommandError
+            //});
         }
     };
 

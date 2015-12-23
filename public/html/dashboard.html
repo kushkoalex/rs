@@ -4735,8 +4735,8 @@
                             name: '@SecType',
                             description: 'Security Type',
                             position: 1,
-                            defaultValue: null,
-                            values: ['Corp', 'Govt', 'Equity', 'Fut', 'BFut']
+                            defaultValue: null//,
+                            //values: ['Corp', 'Govt', 'Equity', 'Fut', 'BFut']
                         },
                         {
                             id:2,
@@ -4756,6 +4756,7 @@
                     commandText: 'C:\\bin\\PriceLoader.exe -ric @Ric -date @EndDate -gethist @StartDate',
                     params: [
                         {
+                            id:3,
                             name: '@Ric',
                             description: 'Identifier',
                             position: 1,
@@ -4763,6 +4764,7 @@
                             values: []
                         },
                         {
+                            id:4,
                             name: '@StartDate',
                             description: 'Identifier',
                             position: 2,
@@ -4770,6 +4772,7 @@
                             values: []
                         },
                         {
+                            id:5,
                             name: '@EndDate',
                             description: 'Identifier',
                             position: 3,
