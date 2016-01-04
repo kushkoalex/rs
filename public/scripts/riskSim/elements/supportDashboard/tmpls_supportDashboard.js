@@ -51,7 +51,7 @@
                 inputOptions.placeholder = data.param.defaultValue;
             }
             return {
-                c: 'form-control',
+                c: 'form-control',a:{'data-type':rs.settings.controlsDescriptors.supportDashboard.commandParamTypeEntered},
                 C: tmpls.input(inputOptions)
             }
         }
@@ -60,7 +60,7 @@
             items.push({text: values[i].value, value: values[i].id});
         }
         return {
-            c: 'form-control',
+            c: 'form-control', a:{'data-type':rs.settings.controlsDescriptors.supportDashboard.commandParamTypeSelected},
             C: tmpls.select({n: 'sCommandParameter', items: items, title: data.param.description+':'})
         }
     }

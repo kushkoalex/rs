@@ -17,6 +17,7 @@ RS.supportDashboard = function ($parent) {
         executeCommandErrorText = 'Error executing command',
         $btnSubmit = build.btnSubmit,
         $paramValues = [],
+        refreshIntervalId,
         paramBuild,
         i,
         u;
@@ -65,7 +66,7 @@ RS.supportDashboard = function ($parent) {
             paramValues,
             i;
 
-        $paramValues=[];
+        $paramValues = [];
 
         var command = getItemById(commands, id);
 
@@ -76,7 +77,13 @@ RS.supportDashboard = function ($parent) {
             gt.each(command.params, function (item) {
                 paramValues = getParameterValues(parameterValues, item.id);
                 paramBuild = tp('commandParameter', {param: item, values: paramValues}, $fragment);
-                $paramValues.push({id:item.id, name:item.name, $inp:paramBuild.sCommandParameter});
+
+                $paramValues.push({
+                    id: item.id,
+                    name: item.name,
+                    $inp: paramBuild.sCommandParameter,
+                    dataType: paramBuild.r.getAttribute('data-type')
+                });
             });
             $commandParams.appendChild($fragment);
         }
@@ -91,11 +98,36 @@ RS.supportDashboard = function ($parent) {
     var executeCommandSuccess = function (response) {
         if (response.errorCode === 0) {
             showAnnouncementMessage({text: response.message});
+            refreshIntervalId = setInterval(getStatus, 2000);
         } else {
             showErrorMessage({text: response.errorText || executeCommandErrorText});
+            btnSubmit.enable();
         }
+        //btnSubmit.enable();
+    };
 
-        btnSubmit.enable();
+    var getStatus = function () {
+        $.ajax({
+            url: rs.settings.controlsDescriptors.supportDashboard.indicUpdateToolExecuteCommandStatusUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (status) {
+                if (!status.errorCode) {
+                    if (status.statusCode === 0) {
+                        clearInterval(refreshIntervalId);
+                        btnSubmit.enable();
+                    }
+                    else {
+                        showAnnouncementMessage({text: status.statusText})
+                    }
+                }
+            },
+            error: function (error) {
+                clearInterval(refreshIntervalId);
+                btnSubmit.enable();
+                showErrorMessage({text: error || executeCommandErrorText});
+            }
+        });
     };
 
     var executeCommandError = function (error) {
@@ -105,13 +137,13 @@ RS.supportDashboard = function ($parent) {
 
     var collectFormData = function () {
         var params = [];
-        gt.each($paramValues,function(item){
-            params.push({id:item.id,name:item.name,value:item.$inp.value});
+        gt.each($paramValues, function (item) {
+            params.push({id: item.id, name: item.name, value: item.$inp.value, populateMethod: item.dataType});
         });
 
-        return{
+        return {
             commandId: +$command.value,
-            commandParams : params
+            commandParams: params
         }
     };
 
@@ -120,6 +152,9 @@ RS.supportDashboard = function ($parent) {
         btnSubmit.loading();
         if (settings.env === 'dev') {
             setTimeout(function () {
+
+                collectFormData();
+
                 executeCommandSuccess(
                     {
                         errorCode: 0,
@@ -148,5 +183,5 @@ RS.supportDashboard = function ($parent) {
     };
 
     var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick});
-
+    refreshIntervalId = setInterval(getStatus, 3000);
 };
