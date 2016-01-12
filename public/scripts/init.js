@@ -6,7 +6,8 @@ GT.ready(function(gt,global){
         $pnlUpdate = gt.$('pnlUpdate'),
         $opsDashboard = gt.$('opsDashboard'),
         $userSettings = gt.$('userSettings'),
-        $supportDashboard = gt.$('supportDashboard');
+        $supportDashboard = gt.$('supportDashboard'),
+        $supportDashboardReportsRunner = gt.$('supportDashboardReportsRunner');
 
 
     global.cnCt.bindTemplates(rs.tmpls);
@@ -33,5 +34,8 @@ GT.ready(function(gt,global){
     }
     if ($supportDashboard !== null) {
         rs.supportDashboard($supportDashboard);
+    }
+    if ($supportDashboardReportsRunner !== null) {
+        rs.supportDashboardReportsRunner($supportDashboardReportsRunner);
     }
 });

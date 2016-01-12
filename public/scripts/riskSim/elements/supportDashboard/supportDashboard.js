@@ -148,13 +148,10 @@ RS.supportDashboard = function ($parent) {
     };
 
     var sbmBtnClick = function () {
-        //console.log(collectFormData());
         btnSubmit.loading();
         if (settings.env === 'dev') {
             setTimeout(function () {
-
                 collectFormData();
-
                 executeCommandSuccess(
                     {
                         errorCode: 0,
@@ -171,17 +168,8 @@ RS.supportDashboard = function ($parent) {
                 success: executeCommandSuccess,
                 error: executeCommandError
             });
-
-            //gt.request({
-            //    method: 'POST',
-            //    postData: collectFormData(), //{secId: selectedSecurityId, accountingMethod: $accMethod.value},
-            //    url: settings.controlsDescriptors.supportDashboard.indicUpdateToolExecuteCommandUrl,
-            //    onSuccess: executeCommandSuccess,
-            //    onError: executeCommandError
-            //});
         }
     };
-
     var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick});
     refreshIntervalId = setInterval(getStatus, 3000);
 };
