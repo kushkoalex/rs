@@ -40,38 +40,39 @@ RS.supportDashboardReportsRunner = function ($parent) {
             url: rs.settings.controlsDescriptors.supportDashboard.runReportsStatusUrl,
             type: 'GET',
             contentType: 'application/json',
-            success: function (status) {
+            success: function (response) {
+
+                var status = JSON.parse(response);
+
 
                 console.log(status);
 
-                if (status.errorCode === 0) {
-                    if (status.completed === 1) {
-                        if (refreshIntervalId) {
-                            clearInterval(refreshIntervalId);
-                            btnSubmit.enable();
-                        }
-                    }
-                    else {
-                        btnSubmit.loading();
-                        //showAnnouncementMessage({text: status.statusText})
-                    }
-
-                    if (status.completed === 1 && !statusChecked) {
-                        showAnnouncementMessage({text: 'There are no running processes'});
-                    } else {
-                        statusMessage = '';
-                        for (var i = 0; i < status.resultItems.length; i++) {
-                            statusMessage += status.resultItems[i].process + ' | ' + status.resultItems[i].details + ' | ' + status.resultItems[i].progress + '<br>';
-                        }
-                        showAnnouncementMessage({text: statusMessage});
-                    }
-                    statusChecked = true;
-                } else {
+                if (status.resultItems.length === 0 || status.completed === 1) {
                     if (refreshIntervalId) {
                         clearInterval(refreshIntervalId);
                         btnSubmit.enable();
+                        showAnnouncementMessage({ text: "There are no running processes" });
                     }
                 }
+                else {
+                    btnSubmit.loading();
+                }
+
+                if (status.completed===1 && !statusChecked) {
+                    showAnnouncementMessage({text: 'There are no running processes'});
+                } else {
+                    statusMessage = '';
+                    for (var i = 0; i < status.resultItems.length; i++) {
+                        statusMessage += status.resultItems[i].process + ' | ' + status.resultItems[i].details + ' | ' + status.resultItems[i].progress + '<br>';
+                    }
+                    if (status.resultItems.length === 0) {
+                        showAnnouncementMessage({ text: "There are no running processes" });
+                    } else {
+                        showAnnouncementMessage({ text: statusMessage });
+                    }
+
+                }
+                statusChecked = true;
             },
             error: function (error) {
                 console.log(error);
@@ -84,7 +85,7 @@ RS.supportDashboardReportsRunner = function ($parent) {
 
     var rgRunOnSuccess = function (response) {
         if (response.errorCode !== 0) {
-            showErrorMessage({text: response.errorText, hideTimeout:3000});
+            showErrorMessage({text: response.errorText, hideTimeout: 3000});
             btnSubmit.enable();
         } else {
             showAnnouncementMessage({text: response.message});
@@ -144,6 +145,7 @@ RS.supportDashboardReportsRunner = function ($parent) {
     gt.datePicker($runDate);
     var portfolios = gt.multipleInput($portfolios);
     var securityIds = gt.multipleInput($securityIds);
-    var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick});
+    var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick, isDisabled: true});
+    getStatus();
     refreshIntervalId = setInterval(getStatus, 3000);
 };

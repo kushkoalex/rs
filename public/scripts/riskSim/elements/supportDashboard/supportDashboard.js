@@ -112,14 +112,13 @@ RS.supportDashboard = function ($parent) {
             type: 'POST',
             contentType: 'application/json',
             success: function (status) {
-                if (!status.errorCode) {
-                    if (status.statusCode === 0) {
-                        clearInterval(refreshIntervalId);
-                        btnSubmit.enable();
-                    }
-                    else {
-                        showAnnouncementMessage({text: status.statusText})
-                    }
+                if (status.statusCode === 0) {
+                    showAnnouncementMessage({ text: "There are no running processes" });
+                    clearInterval(refreshIntervalId);
+                    btnSubmit.enable();
+                } else {
+                    showAnnouncementMessage({text: status.statusText});
+                    btnSubmit.loading();
                 }
             },
             error: function (error) {
@@ -170,6 +169,7 @@ RS.supportDashboard = function ($parent) {
             });
         }
     };
-    var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick});
-    refreshIntervalId = setInterval(getStatus, 3000);
+    var btnSubmit = gt.button($btnSubmit, {submitCallBack: sbmBtnClick, isDisabled:true});
+    getStatus();
+    refreshIntervalId = setInterval(getStatus, 2000);
 };
