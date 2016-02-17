@@ -52,7 +52,9 @@
             }
             return {
                 c: 'form-control',a:{'data-type':rs.settings.controlsDescriptors.supportDashboard.commandParamTypeEntered},
-                C: tmpls.input(inputOptions)
+                //C: tmpls.input(inputOptions)
+				//C: tmpls.multipleInput({n: 'evIds', title: 'EvIds'})
+				C:tmpls.multipleInput(inputOptions)
             }
         }
 

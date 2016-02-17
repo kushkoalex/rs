@@ -4,7 +4,9 @@
                 enableCellNavigation: true,
                 showHeaderRow: true,
                 headerRowHeight: 28,
-                explicitInitialization: true
+                explicitInitialization: true//,
+               // enableColumnReorder: false //,
+             //   multiColumnSort: true
             },
             columnFilters = {},
             u;
@@ -48,6 +50,23 @@
                     .appendTo(args.node);
             }
         });
+
+        grid.onSort.subscribe(function (e, args) {
+            var field = args.sortCol.field;
+
+            rows.sort(function (a, b) {
+                var result =
+                    a[field] > b[field] ? 1 :
+                    a[field] < b[field] ? -1 :
+                    0;
+
+                return args.sortAsc ? result : -result;
+            });
+
+            slickgrid.invalidate();
+            grid.render();
+        });
+
         if (data !== u) {
 
             for (var i = 0; i < data.length; i++) {
@@ -62,3 +81,6 @@
         }
     }
 })(GT, RS);
+
+
+

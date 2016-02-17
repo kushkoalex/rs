@@ -61,6 +61,8 @@ RS.supportDashboard = function ($parent) {
     };
 
     var onCommandChange = function () {
+		
+		
         var $fragment = global.document.createDocumentFragment(),
             id = this.value,
             paramValues,
@@ -72,12 +74,19 @@ RS.supportDashboard = function ($parent) {
 
         if (command !== null) {
             $commandDescription.innerText = command.description;
-
+			
             $commandParams.innerHTML = '';
             gt.each(command.params, function (item) {
                 paramValues = getParameterValues(parameterValues, item.id);
                 paramBuild = tp('commandParameter', {param: item, values: paramValues}, $fragment);
 
+				if(paramValues.length===0){
+					gt.multipleInput(paramBuild.sCommandParameter);
+				}
+				// if(paramBuild.r.getAttribute('data-type')==rs.settings.controlsDescriptors.supportDashboard.commandParamTypeEntered){
+					
+				// }
+				
                 $paramValues.push({
                     id: item.id,
                     name: item.name,

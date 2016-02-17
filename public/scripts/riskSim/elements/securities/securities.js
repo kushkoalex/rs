@@ -252,6 +252,10 @@ RS.securities = function ($parent) {
 
                 btnSubmit.enable();
 
+                var valueFormatter = function (row, cell, value, columnDef, dataContext) {
+                    return '<div class="positions-checkbox"><input class="riskSimpositionItemCheckbox" type="checkbox" data-value-TradeId="' + value.Secid + '"></div>';
+                };
+
                 if (response.errorCode === 0) {
                     var data = response.securityPositions;
                     var positionColumns = response.securityPositionColumns;
@@ -267,11 +271,32 @@ RS.securities = function ($parent) {
                             }
                             positions.push(pos)
                         }
-                        columns = gt.getSlickGridColumns(positions[0], positionColumns);
+
+                        var columnFirstDataRow = [];
+
+                        if (positions.length >= 2)
+                            columnFirstDataRow = positions[1];
+                        else
+                            columnFirstDataRow = positions[0];
+
+                        columns = gt.getSlickGridColumns(positions[0],columnFirstDataRow, positionColumns,'positionCheckbox');
                     }
 
+                    columns.unshift({
+                        id: -1,
+                        name: '<input type="checkbox" id="selectAllCheckBox" >',
+                        width: 15,
+                        field: 'positionCheckbox',
+                        formatter: valueFormatter,
+                        datatype: 'string',
+                        sortable: false
+                    });
                     //rs.slickGrid("#securityPositionsGrid", columns, data);
-                    rs.slickGrid("#securityPositionsGrid", columns, positions);
+                    //rs.slickGrid("#securityPositionsGrid", columns, positions);
+                    var additional_menu_entries = [];
+                    var options = { locale: 'en' };
+                    createSlickGridExtended('securityPositionsGrid', positions, columns, options, additional_menu_entries);
+
                 } else {
                     showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }
@@ -289,6 +314,8 @@ RS.securities = function ($parent) {
 
             };
 
+		
+
             var loadPositionsError = function (error) {
                 showErrorMessage({text: error || loadingPositionsErrorText});
                 //enableSbmBtn();
@@ -304,8 +331,9 @@ RS.securities = function ($parent) {
 
 
     };
-
+    
     var loadTrades = function () {
+        
         var $fragment = global.document.createDocumentFragment(),
             $strategy,
             build;
@@ -333,6 +361,7 @@ RS.securities = function ($parent) {
             };
 
             var loadTradesSuccess = function (response) {
+                
                 var valueFormatter = function (row, cell, value, columnDef, dataContext) {
                     return '<div class="trades-checkbox"><input class="riskSimTradeItemCheckbox" type="checkbox" data-value-TradeId="' + value.TradeId + '"></div>';
                 };
@@ -353,18 +382,39 @@ RS.securities = function ($parent) {
                             };
                             trades.push(trade)
                         }
+
+                        var columnFirstDataRow = [];
+
+                        if (trades.length>=2)
+                            columnFirstDataRow = trades[1];
+                        else
+                            columnFirstDataRow = trades[0];
+
                         //columns = gt.getSlickGridColumns(trades[0], tradeColumns);
-                        columns = gt.getSlickGridColumns(trades[0], tradeColumns, 'tradeCheckbox');
+                        columns = gt.getSlickGridColumns(trades[0], columnFirstDataRow, tradeColumns, 'tradeCheckbox');
+                        
                         columns.unshift({
                             id: -1,
-                            name: '',
-                            width: 10,
+                            name: '<input type="checkbox" id="selectAllCheckBox" >',
+                            width: 15,
                             field: 'tradeCheckbox',
-                            formatter: valueFormatter
+                            formatter: valueFormatter,
+                            datatype: 'string',
+                            sortable:false
                         });
                     }
 
-                    rs.slickGrid("#securityTradesGrid", columns, trades, 'tradeCheckbox');
+                    var additional_menu_entries = [];
+                    //var additional_menu_entries = [{ label: 'Additional entry', hint: 'Additional entry just for fun', action: function (t) { alert('Just for fun'); } }];
+
+                    var options = {
+                        locale: 'en'
+                    };
+
+                    //Old Implementation
+                    //rs.slickGrid("#securityTradesGrid", columns, trades, 'tradeCheckbox');
+                    createSlickGridExtended('securityTradesGrid', trades, columns, options, additional_menu_entries);                      
+          
                 } else {
                     showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }
@@ -595,19 +645,33 @@ RS.securities = function ($parent) {
                             };
                             prices.push(price)
                         }
-                        columns = gt.getSlickGridColumns(prices[0], priceColumns, 'priceCheckbox');
+
+                        var columnFirstDataRow = [];
+
+                        if (prices.length >= 2)
+                            columnFirstDataRow = prices[1];
+                        else
+                            columnFirstDataRow = prices[0];
+
+                        columns = gt.getSlickGridColumns(prices[0], columnFirstDataRow, priceColumns, 'priceCheckbox');
 
                         columns.unshift({
                             id: -1,
-                            name: '',
-                            width: 10,
+                            name: '<input type="checkbox" id="selectAllCheckBox" >',
+                            width: 15,
                             field: 'priceCheckbox',
-                            formatter: valueFormatter
+                            formatter: valueFormatter,
+                            datatype: 'string',
+                            sortable: false
+
                         });
                     }
 
+                    //rs.slickGrid("#securityPricesGrid", columns, prices, 'priceCheckbox');
+                    var additional_menu_entries = [];
+                    var options = { locale: 'en' };
+                    createSlickGridExtended('securityPricesGrid', prices, columns, options, additional_menu_entries);
 
-                    rs.slickGrid("#securityPricesGrid", columns, prices, 'priceCheckbox');
                 } else {
                     showErrorMessage({text: response.errorText || loadingPositionsErrorText})
                 }

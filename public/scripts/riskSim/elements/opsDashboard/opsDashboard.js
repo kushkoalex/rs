@@ -83,7 +83,14 @@ RS.opsDashboard = function ($parent) {
             }
 
             //rs.slickGrid("#securityPositionsGrid", columns, data);
-            rs.slickGrid("#vpmFxRatesGrid", columns, rates);
+            //rs.slickGrid("#vpmFxRatesGrid", columns, rates);
+            //rs.slickGrid("#securityTradesGrid", columns, trades, 'tradeCheckbox');
+            var additional_menu_entries = [];
+            var options = { locale: 'en' };
+            createSlickGridExtended('securityTradesGrid', rates, columns, options, additional_menu_entries);
+           
+
+
         } else {
             showErrorMessage({text: response.errorText || loadingVpmFxRatesErrorText})
         }
