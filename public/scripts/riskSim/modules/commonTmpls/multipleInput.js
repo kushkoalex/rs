@@ -62,6 +62,8 @@
             if (updateSource) {
                 $input.value = _ids.join(delimiter);
             }
+
+
         };
 
 
@@ -79,11 +81,17 @@
                     _ids.splice(index, 1);
                     gt.removeElement(currentNode);
                     $input.value = _ids.join(delimiter);
+                    if(options.setValuesCallback){
+                        options.setValuesCallback(_ids);
+                    }
                 });
             }
 
             $itemsContainer.appendChild($fragment);
 
+            if(options.setValuesCallback){
+                options.setValuesCallback(_ids);
+            }
         };
 
         var onPaste = function (e) {
@@ -125,7 +133,6 @@
                 displayItems();
             }
         }
-
     }
 
 })(GT, RS);

@@ -60,6 +60,10 @@ RS.supportDashboard = function ($parent) {
         return result;
     };
 
+    var onMultipleInputSetValues = function(values){
+        console.log(values);
+    };
+
     var onCommandChange = function () {
 		
 		
@@ -81,11 +85,10 @@ RS.supportDashboard = function ($parent) {
                 paramBuild = tp('commandParameter', {param: item, values: paramValues}, $fragment);
 
 				if(paramValues.length===0){
-					gt.multipleInput(paramBuild.sCommandParameter);
+					gt.multipleInput(paramBuild.sCommandParameter,{setValuesCallback:onMultipleInputSetValues});
 				}
-				// if(paramBuild.r.getAttribute('data-type')==rs.settings.controlsDescriptors.supportDashboard.commandParamTypeEntered){
-					
-				// }
+
+
 				
                 $paramValues.push({
                     id: item.id,
